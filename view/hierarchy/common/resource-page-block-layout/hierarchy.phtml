@@ -18,7 +18,7 @@ if (!$itemSets) {
 }
 
 // Get order for printing hierarchies from Site Hierarchies page setting
-$siteHierarchiesArray = $this->siteSetting('site_hierarchies');
+$siteHierarchiesArray = $this->siteSetting('site_hierarchies') ?: [];
 
 $siteGroupings = array();
 $printedHierarchies = array();
