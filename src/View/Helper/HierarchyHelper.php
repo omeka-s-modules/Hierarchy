@@ -129,7 +129,6 @@ class HierarchyHelper extends AbstractHelper
                     $prevNode = $childNode;
                     $childNode = true;
                     $childCount = count($childArray);
-                    $childCount--;
                     $jstreeNodes[$key]['children'] = $iterate($childArray);
                     $childNode = $prevNode;
                 } elseif ($childCount >= 1) {
