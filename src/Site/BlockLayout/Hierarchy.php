@@ -13,37 +13,37 @@ use Laminas\View\Renderer\PhpRenderer;
 class Hierarchy extends AbstractBlockLayout
 {
 
-	public function getLabel() {
-		return 'Hierarchy'; // @translate
-	}
+    public function getLabel() {
+        return 'Hierarchy'; // @translate
+    }
 
-	public function form(PhpRenderer $view, SiteRepresentation $site,
+    public function form(PhpRenderer $view, SiteRepresentation $site,
         SitePageRepresentation $page = null, SitePageBlockRepresentation $block = null
     ) {
         $allHierarchies = $view->api()->search('hierarchy', ['sort_by' => 'position'])->getContent();
 
-		// Only show groupings/hierarchies assigned by Hierarchy option in site's context menu
-		$siteHierarchiesArray = $view->siteSetting('site_hierarchies');
+        // Only show groupings/hierarchies assigned by Hierarchy option in site's context menu
+        $siteHierarchiesArray = $view->siteSetting('site_hierarchies');
 
-		$hierarchies = array();
-	    foreach ($allHierarchies as $hierarchy) {
-			if ($siteHierarchiesArray) {
-				foreach ($siteHierarchiesArray as $siteHierarchy) {
-			        if ($hierarchy->id() == $siteHierarchy['id']) {
-			            $hierarchies[] = $hierarchy;
-			        }
-			    }
-			}
-		}
+        $hierarchies = array();
+        foreach ($allHierarchies as $hierarchy) {
+            if ($siteHierarchiesArray) {
+                foreach ($siteHierarchiesArray as $siteHierarchy) {
+                    if ($hierarchy->id() == $siteHierarchy['id']) {
+                        $hierarchies[] = $hierarchy;
+                    }
+                }
+            }
+        }
 
-		$options = [];
-		foreach ($hierarchies as $hierarchy) {
+        $options = [];
+        foreach ($hierarchies as $hierarchy) {
             $options[$hierarchy->id()] = $hierarchy->getLabel() ?: '[Untitled]';
         }
 
-		if (count($hierarchies) === 0) {
-			$options[] = $view->translate('(No site hierarchies assigned)');
-		}
+        if (count($hierarchies) === 0) {
+            $options[] = $view->translate('(No site hierarchies assigned)');
+        }
 
         $setHierarchy = $block ? $block->dataValue('Hierarchy') : '';
 
@@ -57,20 +57,20 @@ class Hierarchy extends AbstractBlockLayout
         return $html;
     }
 
-	public function render(PhpRenderer $view, SitePageBlockRepresentation $block)
-	{	
+    public function render(PhpRenderer $view, SitePageBlockRepresentation $block)
+    {	
         $hierarchy = $view->api()->searchOne('hierarchy', ['id' => $block->dataValue('Hierarchy')])->getContent();
-		if (!$hierarchy) {
+        if (!$hierarchy) {
             return '';
         }
 
-		$hierarchyData = $view->hierarchyHelper()->toJstree($hierarchy);
-		$allGroupings = $view->api()->search('hierarchy_grouping', ['hierarchy' => $hierarchy->id(), 'sort_by' => 'position'])->getContent();
+        $hierarchyData = $view->hierarchyHelper()->toJstree($hierarchy);
+        $allGroupings = $view->api()->search('hierarchy_grouping', ['hierarchy' => $hierarchy->id(), 'sort_by' => 'position'])->getContent();
 
         return $view->partial('hierarchy/common/block-layout/hierarchy-public', [
             'hierarchy' => $hierarchy,
-			'hierarchyData' => $hierarchyData,
-			'allGroupings' => $allGroupings,
+            'hierarchyData' => $hierarchyData,
+            'allGroupings' => $allGroupings,
         ]);
-	}
+    }
 }
