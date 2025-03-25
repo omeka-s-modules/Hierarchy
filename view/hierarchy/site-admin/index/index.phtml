@@ -27,6 +27,7 @@ $rowTemplate = '
 <div id="site-hierarchies" class="selector-rows <?php echo ((count($siteHierarchies) > 0)) ? '' : 'empty'; ?>"
     data-existing-rows="<?php echo $this->escapeHtml(json_encode($siteHierarchies)); ?>"
     data-row-template="<?php echo $this->escapeHtml($rowTemplate); ?>">
+    <p><?php echo $this->translate("Drag & drop to change the order in which hierarchies appear on site resource pages."); ?></p>
     <div class="resource-rows"></div>
     <div class="no-resources"><?php echo $this->translate('No hierarchies are assigned to this site.'); ?></div>
 </div>
