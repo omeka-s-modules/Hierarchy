@@ -66,7 +66,7 @@ $iterate = function ($groupings, $itemSet) use (&$iterate, &$allGroupings, &$pri
             } catch (\Exception $e) {
                 // Print groupings with private itemSet
                 $itemSet = '';
-                $groupingLabel = $grouping->getLabel() ?: $this->translate('[Untitled]');
+                $groupingLabel = $grouping->getLabel() ? $grouping->getLabel() . $this->translate(' (Private)') : $this->translate('(Private)');
             }
         } else {
             // Print groupings without assigned itemSet
@@ -95,17 +95,18 @@ $iterate = function ($groupings, $itemSet) use (&$iterate, &$allGroupings, &$pri
         }
 
         if (!is_null($itemSet)) {
+            $itemSetCount = $this->hierarchyHelper()->itemSetCount($grouping, $allGroupings);
             // Show itemSet count if hierarchy_show_count checked in config
-            $itemSetCount = $this->siteSetting('hierarchy_show_count') ? $this->hierarchyHelper()->itemSetCount($grouping, $allGroupings) : '';
+            $itemSetShow = $this->siteSetting('hierarchy_show_count') ? $itemSetCount : '';
             // Bold current page grouping
             if (!empty($groupingLabel)) {
                 if ($grouping->id() == $hierarchyGrouping->id()) {
-                    echo '<li><b>' . $this->hyperlink($groupingLabel, $this->url('site/hierarchy', ['site-slug' => $this->currentSite()->slug(), 'grouping-id' => $grouping->id()])) . '</b>' . $itemSetCount;
+                    echo '<li><b>' . $this->hyperlink($groupingLabel, $this->url('site/hierarchy', ['site-slug' => $this->currentSite()->slug(), 'grouping-id' => $grouping->id()])) . '</b>' . $itemSetShow;
                 } else if ($itemSetCount == null) {
                     // Don't link to hierarchies without items to display (private etc.)
                     echo '<li>' . $groupingLabel;
                 } else {
-                    echo '<li>' . $this->hyperlink($groupingLabel, $this->url('site/hierarchy', ['site-slug' => $this->currentSite()->slug(), 'grouping-id' => $grouping->id()])) . $itemSetCount;
+                    echo '<li>' . $this->hyperlink($groupingLabel, $this->url('site/hierarchy', ['site-slug' => $this->currentSite()->slug(), 'grouping-id' => $grouping->id()])) . $itemSetShow;
                 }
             }
         }

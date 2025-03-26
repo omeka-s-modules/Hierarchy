@@ -149,6 +149,7 @@ class HierarchyHelper extends AbstractHelper
         $view = $this->getView();
 
         $itemSetArray = $this->getChildItemsets($currentGrouping, $allGroupings);
+
         $itemCount = 0;
         foreach ($itemSetArray as $itemSet) {
             $itemCount += isset($itemSet) ? $itemSet->itemCount() : 0;
@@ -255,7 +256,7 @@ class HierarchyHelper extends AbstractHelper
                         $groupingLabel = $grouping->getLabel() ?: $grouping->getItemSet()->displayTitle(null, $valueLang);
                     } catch (\Exception $e) {
                         // itemSet not found or private
-                        $groupingLabel = $grouping->getLabel() ?: $view->translate('Private');
+                        $groupingLabel = $grouping->getLabel() ? $grouping->getLabel() . $this->translate(' (Private)') : $view->translate('(Private)');
                     }
                 } else {
                     $groupingLabel = $grouping->getLabel() ?: $view->translate('[Untitled]');
@@ -267,21 +268,21 @@ class HierarchyHelper extends AbstractHelper
                 } catch (\Exception $e) {
                     // Print groupings without assigned itemSet
                     $itemSet = null;
-                    // Show (combined child) itemSet count if hierarchy_show_count checked in site config OR if called from admin side
+                    // Show (combined child) itemSet count if called from admin side
                     if ($view->status()->isAdminRequest() || $view->siteSetting('hierarchy_show_count')) {
                         $itemSetCount = $this->itemSetCount($grouping, $allGroupings);
                     } else {
                         $itemSetCount = '';
                     }
+                    // Show itemSet count if hierarchy_show_count checked in config
+                    $itemSetShow = $view->siteSetting('hierarchy_show_count') ? $itemSetCount : '';
 
-                    if ($itemSetCount != null) {
+                    if (!empty($groupingLabel)) {
                         if ($public) {
-                            echo '<li>' . $view->hyperlink($groupingLabel, $view->url('site/hierarchy', ['site-slug' => $view->currentSite()->slug(), 'grouping-id' => $grouping->id()])) . $itemSetCount;
+                            echo '<li>' . $view->hyperlink($groupingLabel, $view->url('site/hierarchy', ['site-slug' => $view->currentSite()->slug(), 'grouping-id' => $grouping->id()])) . $itemSetShow;
                         } else {
-                            echo '<li>' . $groupingLabel . $itemSetCount;
+                            echo '<li>' . $groupingLabel . $itemSetShow;
                         }
-                    } else if (!empty($groupingLabel)) {
-                        echo '<li>' . $groupingLabel;
                     }
                 }
 
