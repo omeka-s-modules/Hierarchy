@@ -151,9 +151,18 @@ class HierarchyHelper extends AbstractHelper
         $itemSetArray = $this->getChildItemsets($currentGrouping, $allGroupings);
 
         $itemCount = 0;
+        $resourceArray = array();
         foreach ($itemSetArray as $itemSet) {
-            $itemCount += isset($itemSet) ? $itemSet->itemCount() : 0;
+            $response = $view->api()
+            ->search('items', [
+                'item_set_id' => $itemSet->id(),
+            ]);
+            foreach ($response->getContent() as $itemSetResource) {
+                $resourceArray[] = $itemSetResource->id();
+            }
         }
+        $resourceArray = array_unique($resourceArray);
+        $itemCount = count($resourceArray);
 
         if ($itemCount == 0) {
             // Hide count if 0 items returned
