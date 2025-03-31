@@ -151,16 +151,22 @@ class HierarchyHelper extends AbstractHelper
         $itemSetArray = $this->getChildItemsets($currentGrouping, $allGroupings);
 
         $itemCount = 0;
-        $resourceArray = array();
-        foreach ($itemSetArray as $itemSet) {
-            $response = $view->api()
-            ->search('items', [
-                'item_set_id' => $itemSet->id(),
-            ]);
-            foreach ($response->getContent() as $itemSetResource) {
-                $resourceArray[] = $itemSetResource->id();
+
+        if (!$itemSetArray) {
+            $resourceArray = array();
+        } else {
+            $resourceArray = array();
+            foreach ($itemSetArray as $itemSet) {
+                $response = $view->api()
+                ->search('items', [
+                    'item_set_id' => $itemSet->id(),
+                ]);
+                foreach ($response->getContent() as $itemSetResource) {
+                    $resourceArray[] = $itemSetResource->id();
+                }
             }
         }
+
         $resourceArray = array_unique($resourceArray);
         $itemCount = count($resourceArray);
 
@@ -208,8 +214,8 @@ class HierarchyHelper extends AbstractHelper
             }
         }
 
-        // Remove duplicate item sets
-        $itemSetArray = array_unique($itemSetArray, SORT_REGULAR);
+        // Remove duplicate and empty item sets
+        $itemSetArray = array_filter(array_unique($itemSetArray, SORT_REGULAR));
 
         return $itemSetArray;
     }
