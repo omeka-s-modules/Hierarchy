@@ -16,16 +16,17 @@ $this->headLink()->appendStylesheet($this->assetUrl('css/hierarchy.css', 'Hierar
     <ul class="hierarchy-list">
         <?php $iterate = function ($groupings) use (&$iterate, $allGroupings, $valueLang) {
             foreach ($groupings as $grouping) {
-                $groupingName = $grouping['data']['label'] ?: $this->translate('[Untitled]');
                 $groupingSet = $grouping['data']['itemSet'];
                 $groupingID = $grouping['data']['groupingID'];
                 if (empty($groupingSet)) {
+                    $groupingName = $grouping['data']['label'] ?: $this->translate('[Untitled] (Private)');
                     // Show (combined child) itemSet count if hierarchy_show_count checked in config
                     $groupingObject = $this->api()->read('hierarchy_grouping', $groupingID)->getContent();
-                    $itemSetCount = $this->siteSetting('hierarchy_show_count') ? $this->hierarchyHelper()->itemSetCount($groupingObject, $allGroupings) : '';
+                    $itemSetCount = $this->hierarchyHelper()->itemSetCount($groupingObject, $allGroupings);
+                    $itemSetShow = $this->siteSetting('hierarchy_show_count') ? $itemSetCount : '';
                     if ($itemSetCount != null) {
-                        echo '<li>' . $this->hyperlink($groupingName, $this->url('site/hierarchy', ['site-slug' => $this->currentSite()->slug(), 'grouping-id' => $groupingID])) . $itemSetCount;
-                    } else if (!empty($groupingName)) {
+                        echo '<li>' . $this->hyperlink($groupingName, $this->url('site/hierarchy', ['site-slug' => $this->currentSite()->slug(), 'grouping-id' => $groupingID])) . $itemSetShow;
+                    } else {
                         // Print groupings without assigned itemSet
                         echo '<li>' . $groupingName;
                     }
@@ -42,9 +43,8 @@ $this->headLink()->appendStylesheet($this->assetUrl('css/hierarchy.css', 'Hierar
                         }
                     } catch (NotFoundException $e) {
                         // Print groupings without assigned itemSet
-                        if (!empty($groupingName)) {
-                            echo '<li>' . $groupingName . '</li>';
-                        }
+                        $groupingName = $grouping['data']['label'] ? $grouping['data']['label'] . $this->translate(' (Private)') : $this->translate('[Untitled] (Private)');
+                        echo '<li>' . $groupingName . '</li>';
                     }
                 }
                 if (isset($grouping['children'])) {
