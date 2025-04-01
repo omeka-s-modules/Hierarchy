@@ -105,7 +105,7 @@ class HierarchyHelper extends AbstractHelper
                     } catch (\Exception $e) {
                         // Catch and ignore private itemSets
                         $nodeText = $grouping->getLabel() ? $grouping->getLabel() . $itemSetCount : $itemSetCount;
-                        $groupingItemSet = '';
+                        $groupingItemSet = 'privateHGset';
                     }
                 } else {
                     $nodeText = $grouping->getLabel() ? $grouping->getLabel() . $itemSetCount : $itemSetCount;

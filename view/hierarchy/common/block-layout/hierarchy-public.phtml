@@ -19,13 +19,15 @@ $this->headLink()->appendStylesheet($this->assetUrl('css/hierarchy.css', 'Hierar
                 $groupingSet = $grouping['data']['itemSet'];
                 $groupingID = $grouping['data']['groupingID'];
                 if (empty($groupingSet)) {
-                    $groupingName = $grouping['data']['label'] ?: $this->translate('[Untitled] (Private)');
+                    $groupingName = $grouping['data']['label'] ?: $this->translate('[Untitled]');
                     // Show (combined child) itemSet count if hierarchy_show_count checked in config
                     $groupingObject = $this->api()->read('hierarchy_grouping', $groupingID)->getContent();
                     $itemSetCount = $this->hierarchyHelper()->itemSetCount($groupingObject, $allGroupings);
                     $itemSetShow = $this->siteSetting('hierarchy_show_count') ? $itemSetCount : '';
                     if ($itemSetCount != null) {
                         echo '<li>' . $this->hyperlink($groupingName, $this->url('site/hierarchy', ['site-slug' => $this->currentSite()->slug(), 'grouping-id' => $groupingID])) . $itemSetShow;
+                    } else if ($grouping['data']['label'] == 'privateHGset') {
+                        echo '<li>' . $groupingName . ' (Private)';
                     } else {
                         // Print groupings without assigned itemSet
                         echo '<li>' . $groupingName;

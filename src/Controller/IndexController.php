@@ -100,7 +100,8 @@ class IndexController extends AbstractActionController
             foreach ($groupings as $grouping) {
                 $groupingID = isset($grouping['data']['groupingID']) ? $grouping['data']['groupingID'] : null;
                 $groupingDelete = isset($grouping['state']['disabled']) ? $grouping['state']['disabled'] : false;
-                $groupingData['item_set'] = $grouping['data']['itemSet'] ?: null;
+                // Ignore private item sets if returned
+                $groupingData['item_set'] = (!isset($grouping['data']['itemSet']) || $grouping['data']['itemSet'] == 'privateHGset') ? null : $grouping['data']['itemSet'];
                 $groupingData['hierarchy'] = $hierarchyID;
                 $groupingData['parent_grouping'] = $parentGrouping ?: '';
                 $groupingData['label'] = isset($grouping['data']['label']) ? $grouping['data']['label'] : '';
