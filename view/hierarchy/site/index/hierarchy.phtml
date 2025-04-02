@@ -102,7 +102,7 @@ $iterate = function ($groupings, $itemSet) use (&$iterate, &$allGroupings, &$pri
             if (!empty($groupingLabel)) {
                 if ($grouping->id() == $hierarchyGrouping->id()) {
                     echo '<li><b>' . $this->hyperlink($groupingLabel, $this->url('site/hierarchy', ['site-slug' => $this->currentSite()->slug(), 'grouping-id' => $grouping->id()])) . '</b>' . $itemSetShow;
-                } else if ($itemSetCount == null) {
+                } else if ($itemSetCount == null || (strpos($groupingLabel, '(Private)') !== false)) {
                     // Don't link to hierarchies without items to display (private etc.)
                     echo '<li>' . $groupingLabel;
                 } else {

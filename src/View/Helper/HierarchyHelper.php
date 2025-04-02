@@ -293,10 +293,11 @@ class HierarchyHelper extends AbstractHelper
                     // Show itemSet count if hierarchy_show_count checked in config
                     $itemSetShow = $view->siteSetting('hierarchy_show_count') ? $itemSetCount : '';
 
-                    if ($itemSetCount != null) {
+                    if ($itemSetCount != null && (strpos($groupingLabel, '(Private)') === false)) {
                         if ($public) {
                             echo '<li>' . $view->hyperlink($groupingLabel, $view->url('site/hierarchy', ['site-slug' => $view->currentSite()->slug(), 'grouping-id' => $grouping->id()])) . $itemSetShow;
                         } else {
+                            // Don't link to hierarchies without items to display (private etc.)
                             echo '<li>' . $groupingLabel . $itemSetShow;
                         }
                     } else if (!empty($groupingLabel)) {
