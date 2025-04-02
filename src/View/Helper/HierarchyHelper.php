@@ -268,13 +268,14 @@ class HierarchyHelper extends AbstractHelper
                 if ($grouping->getItemSet()) {
                     try {
                         // If no grouping label, show itemSet title as grouping heading
-                        $groupingLabel = $grouping->getLabel() ?: $grouping->getItemSet()->displayTitle(null, $valueLang);
+                        $displayTitle = $grouping->getItemSet()->displayTitle(null, $valueLang);
+                        $groupingLabel = $grouping->getLabel() ?: $displayTitle;
                     } catch (\Exception $e) {
                         // itemSet not found or private
-                        $groupingLabel = $grouping->getLabel() ? $grouping->getLabel() . $this->translate(' (Private)') : $view->translate('(Private)');
+                        $groupingLabel = $grouping->getLabel() ? $grouping->getLabel() . $view->translate(' (Private)') : $view->translate('[Untitled] (Private)');
                     }
                 } else {
-                    $groupingLabel = $grouping->getLabel() ?: $view->translate('[Untitled]');
+                    $groupingLabel = $grouping->getLabel() ? $grouping->getLabel() : $view->translate('[Untitled]');
                 }
 
                 try {
@@ -292,12 +293,14 @@ class HierarchyHelper extends AbstractHelper
                     // Show itemSet count if hierarchy_show_count checked in config
                     $itemSetShow = $view->siteSetting('hierarchy_show_count') ? $itemSetCount : '';
 
-                    if (!empty($groupingLabel)) {
+                    if ($itemSetCount != null) {
                         if ($public) {
                             echo '<li>' . $view->hyperlink($groupingLabel, $view->url('site/hierarchy', ['site-slug' => $view->currentSite()->slug(), 'grouping-id' => $grouping->id()])) . $itemSetShow;
                         } else {
                             echo '<li>' . $groupingLabel . $itemSetShow;
                         }
+                    } else if (!empty($groupingLabel)) {
+                         echo '<li>' . $groupingLabel;
                     }
                 }
 
