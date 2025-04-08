@@ -7,7 +7,7 @@ $lang = $this->lang();
 $valueLang = $filterLocale ? [$lang, ''] : null;
 $query = $this->params()->fromQuery();
 $hierarchyHeadingLevel = "h2";
-$hierarchyItemSets = [];
+$hierarchyItemSetArray = [];
 
 $this->headLink()->appendStylesheet($this->assetUrl('css/hierarchy.css', 'Hierarchy'));
 $this->headLink()->appendStylesheet($this->assetUrl('css/resource-page-blocks.css', 'Omeka'));
@@ -146,10 +146,20 @@ $iterate = function ($groupings, $itemSet) use (&$iterate, &$allGroupings, &$pri
 
 $groupings = $this->api()->search('hierarchy_grouping', ['id' => $hierarchyGrouping->id(), 'sort_by' => 'position'])->getContent();
 if ($groupings) {
+    $siteItemSets = $this->currentSite()->siteItemSets();
+    $siteItemSetIDs = array();
+    foreach ($siteItemSets as $siteItemSet) {
+        $siteItemSetIDs[] = $siteItemSet->itemSet()->id();
+    }
+
     echo '<div class="hierarchy-metadata"><div class="hierarchy-filters">';
-    $hierarchyItemSets = $iterate($groupings, $itemSet);
+    $hierarchyItemSetArray = $iterate($groupings, $itemSet);
     echo '</div>';
     echo '<div class="hierarchy-item-sets">';
+    // Ignore item sets not assigned to site
+    $hierarchyItemSets = array_filter($hierarchyItemSetArray, function($hierarchyItemSet) use($siteItemSetIDs) {
+        return in_array($hierarchyItemSet->id(), $siteItemSetIDs);
+    });
     if (count($hierarchyItemSets) == 1) {
         $itemSet = $hierarchyItemSets[0];
         echo 'Contains resources from: ';

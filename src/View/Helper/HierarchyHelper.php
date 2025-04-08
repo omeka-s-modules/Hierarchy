@@ -2,6 +2,7 @@
 namespace Hierarchy\View\Helper;
 
 use Laminas\Form\View\Helper\AbstractHelper;
+use Omeka\Mvc\Exception;
 use Omeka\Form\Element as OmekaElement;
 use Laminas\Form\Element;
 use Laminas\Form\Form;
@@ -184,12 +185,25 @@ class HierarchyHelper extends AbstractHelper
     {
         $view = $this->getView();
         $itemSetArray = array();
+        $this->siteItemSetArray = array();
+
+        if ($view->currentSite()) {
+            $siteItemSets = $view->currentSite()->siteItemSets();
+            $siteItemSetArray = array();
+            foreach ($siteItemSets as $siteItemSet) {
+                $this->siteItemSetArray[] = $siteItemSet->itemSet()->id();
+            }
+        }
 
         // Gather all 'child' itemSets if hierarchy_group_resources checked in site config OR if called from admin side
         if ($view->status()->isAdminRequest() || $view->siteSetting('hierarchy_group_resources')) {
             $iterate = function ($currentGrouping) use ($view, $allGroupings, &$iterate, &$itemSetArray) {
                 if ($currentGrouping->getItemSet()) {
                     try {
+                        // Ignore item sets not assigned to site
+                        if ($this->siteItemSetArray && !in_array($currentGrouping->getItemSet()->id(), $this->siteItemSetArray)) {
+                            throw new Exception\NotFoundException;
+                        }
                         $itemSet = $currentGrouping->getItemSet() ? $view->api()->read('item_sets', $currentGrouping->getItemSet()->id())->getContent() : null;
                         $itemSetArray[] = $itemSet;
                     } catch (\Exception $e) {
@@ -206,11 +220,17 @@ class HierarchyHelper extends AbstractHelper
             };
             $iterate($currentGrouping);
         } else {
-            try {
-                $itemSet = $currentGrouping->getItemSet() ? $view->api()->read('item_sets', $currentGrouping->getItemSet()->id())->getContent() : null;
-                $itemSetArray[] = $itemSet;
-            } catch (\Exception $e) {
-                // Move on -- itemSet not found or private
+            if ($currentGrouping->getItemSet()) {
+                try {
+                    // Ignore item sets not assigned to site
+                    if ($this->siteItemSetArray && !in_array($currentGrouping->getItemSet()->id(), $this->siteItemSetArray)) {
+                        throw new Exception\NotFoundException;
+                    }
+                    $itemSet = $currentGrouping->getItemSet() ? $view->api()->read('item_sets', $currentGrouping->getItemSet()->id())->getContent() : null;
+                    $itemSetArray[] = $itemSet;
+                } catch (\Exception $e) {
+                    // Move on -- itemSet not found or private
+                }
             }
         }
 
@@ -248,7 +268,6 @@ class HierarchyHelper extends AbstractHelper
                     }
                     echo '<ul class="hierarchy-list">';
                     // Show label if hierarchy_show_label checked in site config OR if called from admin side
-
                     $allGroupings = $this->getView()->api()->search('hierarchy_grouping', ['hierarchy' => $currentHierarchy, 'sort_by' => 'position'])->getContent();
                     $iterate($allGroupings, $currentItemSet);
                     continue;
@@ -318,19 +337,24 @@ class HierarchyHelper extends AbstractHelper
                         $itemSetCount = '';
                     }
 
-                    // Bold groupings with current itemSet assigned
-                    if (in_array($grouping->getItemSet()->id(), $itemSetIDArray)) {
-                        if ($public) {
-                            echo '<li><b>' . $view->hyperlink($groupingLabel, $view->url('site/hierarchy', ['site-slug' => $view->currentSite()->slug(), 'grouping-id' => $grouping->id()])) . '</b>' . $itemSetCount;
+                    if ($itemSetCount != null && (strpos($groupingLabel, '(Private)') === false)) {
+                        if (in_array($grouping->getItemSet()->id(), $itemSetIDArray)) {
+                            // Bold groupings with current itemSet assigned
+                            if ($public) {
+                                echo '<li><b>' . $view->hyperlink($groupingLabel, $view->url('site/hierarchy', ['site-slug' => $view->currentSite()->slug(), 'grouping-id' => $grouping->id()])) . '</b>' . $itemSetCount;
+                            } else {
+                                echo '<li><b>' . $itemSet->link($groupingLabel) . '</b>' . $itemSetCount;
+                            }
                         } else {
-                            echo '<li><b>' . $itemSet->link($groupingLabel) . '</b>' . $itemSetCount;
+                            if ($public) {
+                                echo '<li>' . $view->hyperlink($groupingLabel, $view->url('site/hierarchy', ['site-slug' => $view->currentSite()->slug(), 'grouping-id' => $grouping->id()])) . $itemSetCount;
+                            } else {
+                                echo '<li>' . $itemSet->link($groupingLabel) . $itemSetCount;
+                            }
                         }
                     } else {
-                        if ($public) {
-                            echo '<li>' . $view->hyperlink($groupingLabel, $view->url('site/hierarchy', ['site-slug' => $view->currentSite()->slug(), 'grouping-id' => $grouping->id()])) . $itemSetCount;
-                        } else {
-                            echo '<li>' . $itemSet->link($groupingLabel) . $itemSetCount;
-                        }
+                        // Don't link to groupings with item sets not assigned to site
+                        echo '<li>' . $groupingLabel;
                     }
                 }
 
