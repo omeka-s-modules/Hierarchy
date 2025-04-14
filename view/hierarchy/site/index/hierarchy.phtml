@@ -161,9 +161,10 @@ if ($groupings) {
         return in_array($hierarchyItemSet->id(), $siteItemSetIDs);
     });
     if (count($hierarchyItemSets) == 1) {
-        $itemSet = $hierarchyItemSets[0];
         echo 'Contains resources from: ';
-        echo $itemSet->link($itemSet->displayTitle());
+        foreach ($hierarchyItemSets as $itemSet) {
+            echo $itemSet->link($itemSet->displayTitle());
+        }
     } else if (count($hierarchyItemSets) > 1) {
         $finalItemSet = end($hierarchyItemSets);
         echo 'Contains resources from: ';
