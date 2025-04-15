@@ -23,7 +23,7 @@ if ($hierarchyGrouping->getLabel()) {
 <div class="hierarchy-row">
 <?php 
 // Iterate through groupings to create nested list in metadata sidebar
-$iterate = function ($groupings, $itemSet) use (&$iterate, &$allGroupings, &$printedGroupings, &$currentHierarchy, &$childCount, &$hierarchyItemSets, $hierarchyGrouping, $valueLang, $hierarchyHeadingLevel) {
+$iterate = function ($groupings, $itemSet, $siteItemSetArray) use (&$iterate, &$allGroupings, &$printedGroupings, &$currentHierarchy, &$childCount, &$hierarchyItemSets, $hierarchyGrouping, $valueLang, $hierarchyHeadingLevel) {
     foreach ($groupings as $key => $grouping) {
         // Continue if grouping has already been printed
         if (isset($printedGroupings) && in_array($grouping, $printedGroupings)) {
@@ -42,7 +42,7 @@ $iterate = function ($groupings, $itemSet) use (&$iterate, &$allGroupings, &$pri
             echo '<ul class="hierarchy-list">';
 
             $allGroupings = $this->api()->search('hierarchy_grouping', ['hierarchy' => $currentHierarchy, 'sort_by' => 'position'])->getContent();
-            $iterate($allGroupings, $itemSet);
+            $iterate($allGroupings, $itemSet, $siteItemSetArray);
             continue;
         }
 
@@ -52,19 +52,23 @@ $iterate = function ($groupings, $itemSet) use (&$iterate, &$allGroupings, &$pri
                 return $parent->id() == $grouping->getParentGrouping();
             });
             if (count($parentArray) > 0) {
-                $iterate($parentArray, $itemSet);
+                $iterate($parentArray, $itemSet, $siteItemSetArray);
                 continue;
             }
         }
 
         if ($grouping->getItemSet()) {
             try {
+                // Ignore item sets not assigned to site
+                if ($siteItemSetArray && !in_array($grouping->getItemSet()->id(), $siteItemSetArray)) {
+                    throw new \Exception;
+                }
                 // If no grouping label, show itemSet title as grouping heading
                 $groupingLabel = $grouping->getLabel() ?: $grouping->getItemSet()->displayTitle(null, $valueLang);
                 $itemSet = $this->api()->read('item_sets', $grouping->getItemSet()->id())->getContent();
                 $hierarchyItemSets[] = $itemSet;
             } catch (\Exception $e) {
-                // Print groupings with private itemSet
+                // ItemSet not found or private
                 $itemSet = '';
                 $groupingLabel = $grouping->getLabel() ? $grouping->getLabel() . $this->translate(' (Private)') : $this->translate('(Private)');
             }
@@ -128,7 +132,7 @@ $iterate = function ($groupings, $itemSet) use (&$iterate, &$allGroupings, &$pri
             $prevChildArray = $childArray ?: [];
             $childCount = count($childArray);
             echo '<ul>';
-            $iterate($childArray, $itemSet);
+            $iterate($childArray, $itemSet, $siteItemSetArray);
             echo '</ul></li>';
             $childArray = $prevChildArray;
             continue;
@@ -147,19 +151,16 @@ $iterate = function ($groupings, $itemSet) use (&$iterate, &$allGroupings, &$pri
 $groupings = $this->api()->search('hierarchy_grouping', ['id' => $hierarchyGrouping->id(), 'sort_by' => 'position'])->getContent();
 if ($groupings) {
     $siteItemSets = $this->currentSite()->siteItemSets();
-    $siteItemSetIDs = array();
+    $siteItemSetArray = array();
     foreach ($siteItemSets as $siteItemSet) {
-        $siteItemSetIDs[] = $siteItemSet->itemSet()->id();
+        $siteItemSetArray[] = $siteItemSet->itemSet()->id();
     }
 
     echo '<div class="hierarchy-metadata"><div class="hierarchy-filters">';
-    $hierarchyItemSetArray = $iterate($groupings, $itemSet);
+    $hierarchyItemSets = $iterate($groupings, $itemSet, $siteItemSetArray);
     echo '</div>';
     echo '<div class="hierarchy-item-sets">';
-    // Ignore item sets not assigned to site
-    $hierarchyItemSets = array_filter($hierarchyItemSetArray, function($hierarchyItemSet) use($siteItemSetIDs) {
-        return in_array($hierarchyItemSet->id(), $siteItemSetIDs);
-    });
+
     if (count($hierarchyItemSets) == 1) {
         echo 'Contains resources from: ';
         foreach ($hierarchyItemSets as $itemSet) {

@@ -250,6 +250,15 @@ class HierarchyHelper extends AbstractHelper
         static $printedGroupings = [];
         static $itemSetCounter = 0;
         $itemSetCounter++;
+
+        if ($view->currentSite()) {
+            $siteItemSets = $view->currentSite()->siteItemSets();
+            $siteItemSetArray = array();
+            foreach ($siteItemSets as $siteItemSet) {
+                $this->siteItemSetArray[] = $siteItemSet->itemSet()->id();
+            }
+        }
+
         $iterate = function ($groupings) use ($view, $currentItemSet, $item, $public, $valueLang, &$itemSetCounter, &$iterate, &$allGroupings, &$printedGroupings, &$currentHierarchy, &$childCount) {
             foreach ($groupings as $key => $grouping) {
                 // Continue if grouping has already been printed
@@ -286,6 +295,10 @@ class HierarchyHelper extends AbstractHelper
 
                 if ($grouping->getItemSet()) {
                     try {
+                        // Ignore item sets not assigned to site
+                        if ($this->siteItemSetArray && !in_array($grouping->getItemSet()->id(), $this->siteItemSetArray)) {
+                            throw new Exception\NotFoundException;
+                        }
                         // If no grouping label, show itemSet title as grouping heading
                         $displayTitle = $grouping->getItemSet()->displayTitle(null, $valueLang);
                         $groupingLabel = $grouping->getLabel() ?: $displayTitle;

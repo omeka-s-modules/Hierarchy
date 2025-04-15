@@ -1,6 +1,11 @@
 <?php
 use Omeka\Api\Exception\NotFoundException;
 $this->headLink()->appendStylesheet($this->assetUrl('css/hierarchy.css', 'Hierarchy'));
+$siteItemSets = $this->currentSite()->siteItemSets();
+$siteItemSetArray = array();
+foreach ($siteItemSets as $siteItemSet) {
+    $siteItemSetArray[] = $siteItemSet->itemSet()->id();
+}
 ?>
 <div class="hierarchy-filters">
     <?php
@@ -14,7 +19,7 @@ $this->headLink()->appendStylesheet($this->assetUrl('css/hierarchy.css', 'Hierar
     }
     ?>
     <ul class="hierarchy-list">
-        <?php $iterate = function ($groupings) use (&$iterate, $allGroupings, $valueLang) {
+        <?php $iterate = function ($groupings) use (&$iterate, $allGroupings, $valueLang, $siteItemSetArray) {
             foreach ($groupings as $grouping) {
                 $groupingSet = $grouping['data']['itemSet'];
                 $groupingID = $grouping['data']['groupingID'];
@@ -35,6 +40,10 @@ $this->headLink()->appendStylesheet($this->assetUrl('css/hierarchy.css', 'Hierar
                 } else {
                     try {
                         $itemSet = $this->api()->read('item_sets', $groupingSet)->getContent();
+                        // Ignore item sets not assigned to site
+                        if ($siteItemSetArray && !in_array($itemSet->id(), $siteItemSetArray)) {
+                            throw new NotFoundException;
+                        }
                         // Show itemSet count if hierarchy_show_count checked in config
                         $groupingObject = $this->api()->read('hierarchy_grouping', $groupingID)->getContent();
                         $itemSetCount = $this->siteSetting('hierarchy_show_count') ? $this->hierarchyHelper()->itemSetCount($groupingObject, $allGroupings) : '';
@@ -46,7 +55,7 @@ $this->headLink()->appendStylesheet($this->assetUrl('css/hierarchy.css', 'Hierar
                     } catch (NotFoundException $e) {
                         // Print groupings without assigned itemSet
                         $groupingName = $grouping['data']['label'] ? $grouping['data']['label'] . $this->translate(' (Private)') : $this->translate('[Untitled] (Private)');
-                        echo '<li>' . $groupingName . '</li>';
+                        echo '<li>' . $groupingName;
                     }
                 }
                 if (isset($grouping['children'])) {
