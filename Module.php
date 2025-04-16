@@ -195,6 +195,8 @@ class Module extends AbstractModule
         $view = $event->getTarget();
         $view->headLink()->appendStylesheet($view->assetUrl('css/hierarchy.css', 'Hierarchy'));
         $api = $this->getServiceLocator()->get('Omeka\ApiManager');
+        $printedHierarchies = array();
+        $itemGroupings = array();
         if ($view->item->itemSets()) {
             echo '<div class="meta-group">';
             echo '<h4>' . $view->translate('Hierarchies') . '</h4>';
@@ -208,6 +210,20 @@ class Module extends AbstractModule
                     continue;
                 }
                 $groupings = $api->search('hierarchy_grouping', ['item_set' => $currentItemSet->id(), 'sort_by' => 'position'])->getContent();
+                foreach ($groupings as $grouping) {
+                    if (!in_array($grouping->getHierarchy()->getId(), $printedHierarchies)) {
+                        // Only print hierarchies with multiple item set groupings once
+                        $itemGroupings[][] = $grouping;
+                        $printedHierarchies[] = $grouping->getHierarchy()->getId();
+                    }
+                }
+            }
+            // Return if no groupings/hierarchies found
+            if (!$itemGroupings) {
+                return;
+            }
+
+            foreach ($itemGroupings as $groupings) {
                 $view->hierarchyHelper()->buildNestedList($groupings, $currentItemSet, $view->item);
             }
             echo '</div></div>';
