@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-11-26 16:04-0800\n"
+"POT-Creation-Date: 2025-04-23 10:59-0700\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,9 +17,9 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: Module.php:200 Module.php:225
+#: Module.php:202 Module.php:241
 #: view/hierarchy/common/resource-page-block-layout/hierarchy.phtml:53
-#: view/hierarchy/site-admin/index/index.phtml:40
+#: view/hierarchy/site-admin/index/index.phtml:41
 msgid "Hierarchies"
 msgstr ""
 
@@ -29,6 +29,17 @@ msgstr ""
 
 #: src/Site/BlockLayout/Hierarchy.php:54 view/hierarchy/index/index.phtml:11
 msgid "Hierarchy"
+msgstr ""
+
+#: src/View/Helper/HierarchyHelper.php:309
+#: view/hierarchy/common/block-layout/hierarchy-public.phtml:57
+#: view/hierarchy/site/index/hierarchy.phtml:73
+msgid " (Private)"
+msgstr ""
+
+#: src/View/Helper/HierarchyHelper.php:309
+#: view/hierarchy/common/block-layout/hierarchy-public.phtml:57
+msgid "[Untitled] (Private)"
 msgstr ""
 
 #: view/hierarchy/common/hierarchy.phtml:10
@@ -60,16 +71,26 @@ msgstr ""
 msgid "Site Hierarchies"
 msgstr ""
 
-#: view/hierarchy/site-admin/index/index.phtml:31
+#: view/hierarchy/site-admin/index/index.phtml:30
+msgid ""
+"Drag & drop to change the order in which hierarchies appear on site resource "
+"pages."
+msgstr ""
+
+#: view/hierarchy/site-admin/index/index.phtml:32
 msgid "No hierarchies are assigned to this site."
 msgstr ""
 
-#: view/hierarchy/site-admin/index/index.phtml:37
+#: view/hierarchy/site-admin/index/index.phtml:38
 msgid "Click on a hierarchy to add it to the edit panel."
 msgstr ""
 
-#: view/hierarchy/site-admin/index/index.phtml:38
+#: view/hierarchy/site-admin/index/index.phtml:39
 msgid "Filter hierarchies"
+msgstr ""
+
+#: view/hierarchy/site/index/hierarchy.phtml:73
+msgid "(Private)"
 msgstr ""
 
 #: Module.php:129
@@ -105,6 +126,6 @@ msgstr ""
 msgid "Hierarchy successfully updated"
 msgstr ""
 
-#: src/View/Helper/HierarchyHelper.php:50
+#: src/View/Helper/HierarchyHelper.php:51
 msgid "Hierarchy Label"
 msgstr ""
