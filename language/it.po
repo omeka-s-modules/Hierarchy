@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-11-26 16:04-0800\n"
+"POT-Creation-Date: 2025-04-23 10:59-0700\n"
 "PO-Revision-Date: 2024-10-28 21:07+0000\n"
 "Last-Translator: Giorgio Comai <g@giorgiocomai.eu>, 2024\n"
 "Language-Team: Italian (https://app.transifex.com/omeka/teams/14184/it/)\n"
@@ -21,9 +21,9 @@ msgstr ""
 "Language: it\n"
 "Plural-Forms: nplurals=3; plural=n == 1 ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;\n"
 
-#: Module.php:200 Module.php:225
+#: Module.php:202 Module.php:241
 #: view/hierarchy/common/resource-page-block-layout/hierarchy.phtml:53
-#: view/hierarchy/site-admin/index/index.phtml:40
+#: view/hierarchy/site-admin/index/index.phtml:41
 msgid "Hierarchies"
 msgstr "Gerarchie"
 
@@ -34,6 +34,17 @@ msgstr "(nessuna gerarchia sito assegnata)"
 #: src/Site/BlockLayout/Hierarchy.php:54 view/hierarchy/index/index.phtml:11
 msgid "Hierarchy"
 msgstr "Gerarchia"
+
+#: src/View/Helper/HierarchyHelper.php:309
+#: view/hierarchy/common/block-layout/hierarchy-public.phtml:57
+#: view/hierarchy/site/index/hierarchy.phtml:73
+msgid " (Private)"
+msgstr ""
+
+#: src/View/Helper/HierarchyHelper.php:309
+#: view/hierarchy/common/block-layout/hierarchy-public.phtml:57
+msgid "[Untitled] (Private)"
+msgstr ""
 
 #: view/hierarchy/common/hierarchy.phtml:10
 msgid "Hierarchy to be removed"
@@ -64,17 +75,27 @@ msgstr "Aggiungi gerarchia"
 msgid "Site Hierarchies"
 msgstr "Gerarchie del sito"
 
-#: view/hierarchy/site-admin/index/index.phtml:31
+#: view/hierarchy/site-admin/index/index.phtml:30
+msgid ""
+"Drag & drop to change the order in which hierarchies appear on site resource"
+" pages."
+msgstr ""
+
+#: view/hierarchy/site-admin/index/index.phtml:32
 msgid "No hierarchies are assigned to this site."
 msgstr "Nessuna gerarchia assegnata a questo sito"
 
-#: view/hierarchy/site-admin/index/index.phtml:37
+#: view/hierarchy/site-admin/index/index.phtml:38
 msgid "Click on a hierarchy to add it to the edit panel."
 msgstr "Clicca su una gerarchia per aggiungerla al pannello di modifica"
 
-#: view/hierarchy/site-admin/index/index.phtml:38
+#: view/hierarchy/site-admin/index/index.phtml:39
 msgid "Filter hierarchies"
 msgstr "Filtra gerarchie"
+
+#: view/hierarchy/site/index/hierarchy.phtml:73
+msgid "(Private)"
+msgstr ""
 
 #: Module.php:129
 msgid "Show hierarchy label"
@@ -116,6 +137,6 @@ msgstr ""
 msgid "Hierarchy successfully updated"
 msgstr "Gerarchia aggiornata con successo"
 
-#: src/View/Helper/HierarchyHelper.php:50
+#: src/View/Helper/HierarchyHelper.php:51
 msgid "Hierarchy Label"
 msgstr "Etichetta della gerarchia"

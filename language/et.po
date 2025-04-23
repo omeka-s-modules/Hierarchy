@@ -4,7 +4,7 @@
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 # 
 # Translators:
-# Vladimir, 2024
+# Rivo Zängov <eraser@eraser.ee>, 2025
 # 
 #, fuzzy
 msgid ""
@@ -13,27 +13,27 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-04-23 10:59-0700\n"
 "PO-Revision-Date: 2024-10-28 21:07+0000\n"
-"Last-Translator: Vladimir, 2024\n"
-"Language-Team: Ukrainian (https://app.transifex.com/omeka/teams/14184/uk/)\n"
+"Last-Translator: Rivo Zängov <eraser@eraser.ee>, 2025\n"
+"Language-Team: Estonian (https://app.transifex.com/omeka/teams/14184/et/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: uk\n"
-"Plural-Forms: nplurals=4; plural=(n % 1 == 0 && n % 10 == 1 && n % 100 != 11 ? 0 : n % 1 == 0 && n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14) ? 1 : n % 1 == 0 && (n % 10 ==0 || (n % 10 >=5 && n % 10 <=9) || (n % 100 >=11 && n % 100 <=14 )) ? 2: 3);\n"
+"Language: et\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: Module.php:202 Module.php:241
 #: view/hierarchy/common/resource-page-block-layout/hierarchy.phtml:53
 #: view/hierarchy/site-admin/index/index.phtml:41
 msgid "Hierarchies"
-msgstr "Ієрархії"
+msgstr "Hierarhiad"
 
 #: src/Site/BlockLayout/Hierarchy.php:45
 msgid "(No site hierarchies assigned)"
-msgstr "(Ієрархії сайту не призначено)"
+msgstr "(Ühtegi saidi hierarhiat pole määratud)"
 
 #: src/Site/BlockLayout/Hierarchy.php:54 view/hierarchy/index/index.phtml:11
 msgid "Hierarchy"
-msgstr "Ієрархія"
+msgstr "Hierarhia"
 
 #: src/View/Helper/HierarchyHelper.php:309
 #: view/hierarchy/common/block-layout/hierarchy-public.phtml:57
@@ -48,32 +48,32 @@ msgstr ""
 
 #: view/hierarchy/common/hierarchy.phtml:10
 msgid "Hierarchy to be removed"
-msgstr "Ієрархія буде видалено"
+msgstr "Eemaldatav hierarhia"
 
 #: view/hierarchy/common/hierarchy.phtml:13
 #: view/hierarchy/site-admin/index/index.phtml:12
 msgid "Remove hierarchy"
-msgstr "Видалити ієрархію"
+msgstr "Eemalda hierarhia"
 
 #: view/hierarchy/common/hierarchy.phtml:14
 msgid "Restore hierarchy"
-msgstr "Відновити ієрархію"
+msgstr "Taasta hierarhia"
 
 #: view/hierarchy/common/hierarchy.phtml:20
 msgid "Add grouping"
-msgstr "Додати групування"
+msgstr "Lisa rühmitamine"
 
 #: view/hierarchy/index/grouping-form.phtml:10
 msgid "Select Item Set..."
-msgstr "Вибрати Набір елементів..."
+msgstr "Vali ühikute kogum..."
 
 #: view/hierarchy/index/index.phtml:17
 msgid "Add Hierarchy"
-msgstr "Додати ієрархію"
+msgstr "Lisa hierarhia"
 
 #: view/hierarchy/site-admin/index/index.phtml:19
 msgid "Site Hierarchies"
-msgstr "Ієрархії сайту"
+msgstr "Saidi hierarhiad"
 
 #: view/hierarchy/site-admin/index/index.phtml:30
 msgid ""
@@ -83,15 +83,15 @@ msgstr ""
 
 #: view/hierarchy/site-admin/index/index.phtml:32
 msgid "No hierarchies are assigned to this site."
-msgstr "Цьому сайту не призначено жодної ієрархії."
+msgstr "Sellele saidile pole määratud ühtegi hieararhiat."
 
 #: view/hierarchy/site-admin/index/index.phtml:38
 msgid "Click on a hierarchy to add it to the edit panel."
-msgstr "Натисніть на ієрархію, щоб додати її до панелі редагування."
+msgstr "Kliki hierarhial, et lisada see muutmise paneelile."
 
 #: view/hierarchy/site-admin/index/index.phtml:39
 msgid "Filter hierarchies"
-msgstr "Фільтр ієрархій"
+msgstr "Filtreeri hierarhiaid"
 
 #: view/hierarchy/site/index/hierarchy.phtml:73
 msgid "(Private)"
@@ -99,39 +99,43 @@ msgstr ""
 
 #: Module.php:129
 msgid "Show hierarchy label"
-msgstr "Показати мітку ієрархії"
+msgstr "Näita hierarhia silti"
 
 #: Module.php:130
 msgid ""
 "If checked, assigned label will display as hierarchy header on public pages."
 msgstr ""
-"Якщо позначено, призначена мітка відображатиметься як заголовок ієрархії на "
-"загальнодоступних сторінках."
+"Kui see on valitud, siis näidatakse avalike lehtede pealkirjana määratud "
+"silti."
 
 #: Module.php:143
 msgid "Show hierarchy resource counts"
-msgstr "Показати кількість ієрархій ресурсу"
+msgstr "Näita hierarhia resursside arvu"
 
 #: Module.php:144
 msgid ""
 "If checked, hierarchy groupings will show # of resources within currently "
 "assigned itemSet."
 msgstr ""
+"Kui see on valitud, siis näidatakse valitud hierarhia ühikute kogus olevate "
+"resursside arvu."
 
 #: Module.php:157
 msgid "Combine hierarchy resources"
-msgstr ""
+msgstr "Kombineeri hierarhiate ressursid"
 
 #: Module.php:158
 msgid ""
 "If checked, groupings will display resources of all child groupings in "
 "resource counts and on hierarchy grouping browse pages."
 msgstr ""
+"Kui see on valitud, siis näidatakse rühmitamisi alamrühmades ja hierarhia "
+"rühmade sirvimise lehel."
 
 #: src/Controller/IndexController.php:65
 msgid "Hierarchy successfully updated"
-msgstr "Ієрархію успішно оновлено"
+msgstr "Hierarhiat on uuendatud"
 
 #: src/View/Helper/HierarchyHelper.php:51
 msgid "Hierarchy Label"
-msgstr "Мітка ієрархії"
+msgstr "Hierarhia silt"
