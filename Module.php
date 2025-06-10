@@ -198,9 +198,6 @@ class Module extends AbstractModule
         $printedHierarchies = array();
         $itemGroupings = array();
         if ($view->item->itemSets()) {
-            echo '<div class="meta-group">';
-            echo '<h4>' . $view->translate('Hierarchies') . '</h4>';
-            echo '<div class="hierarchies value">';
             // Get order for printing item's sets from position on hierarchy page
             $itemSetOrder = array_filter($api->search('hierarchy_grouping', ['sort_by' => 'position'], ['returnScalar' => 'item_set'])->getContent());
             $itemSets = array_replace(array_flip($itemSetOrder), $view->item->itemSets());
@@ -223,6 +220,10 @@ class Module extends AbstractModule
                 return;
             }
 
+            echo '<div class="meta-group">';
+            echo '<h4>' . $view->translate('Hierarchies') . '</h4>';
+            echo '<div class="hierarchies value">';
+
             foreach ($itemGroupings as $groupings) {
                 $view->hierarchyHelper()->buildNestedList($groupings, $currentItemSet, $view->item);
             }
@@ -236,6 +237,11 @@ class Module extends AbstractModule
         $view = $event->getTarget();
         $api = $this->getServiceLocator()->get('Omeka\ApiManager');
         $groupings = $api->search('hierarchy_grouping', ['item_set' => $view->resource->id(), 'sort_by' => 'position'])->getContent();
+
+        // Return if no groupings/hierarchies found
+        if (!$groupings) {
+            return;
+        }
 
         echo '<div class="meta-group">';
         echo '<h4>' . $view->translate('Hierarchies') . '</h4>';
