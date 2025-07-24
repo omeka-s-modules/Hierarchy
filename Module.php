@@ -162,6 +162,20 @@ class Module extends AbstractModule
                 'value' => $siteSettings->get('hierarchy_group_resources', true),
             ],
         ]);
+
+        $form->add([
+            'type' => 'checkbox',
+            'name' => 'hierarchy_link_itemSet',
+            'options' => [
+                        'element_group' => 'hierarchy',
+                        'label' => 'Link directly to item set', // @translate
+                        'info' => 'If checked, public hierarchy links will point directly to associated item set page instead of hierarchy grouping page.', // @translate
+                    ],
+            'attributes' => [
+                'id' => 'group-resources',
+                'value' => $siteSettings->get('hierarchy_link_itemSet'),
+            ],
+        ]);
     }
 
     /**
@@ -184,6 +198,11 @@ class Module extends AbstractModule
         ]);
         $inputFilter->add([
             'name' => 'hierarchy_group_resources',
+            'required' => false,
+            'allow_empty' => true,
+        ]);
+        $inputFilter->add([
+            'name' => 'hierarchy_link_itemSet',
             'required' => false,
             'allow_empty' => true,
         ]);

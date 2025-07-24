@@ -29,13 +29,14 @@ foreach ($siteItemSets as $siteItemSet) {
                     $groupingObject = $this->api()->read('hierarchy_grouping', $groupingID)->getContent();
                     $itemSetCount = $this->hierarchyHelper()->itemSetCount($groupingObject, $allGroupings);
                     $itemSetShow = $this->siteSetting('hierarchy_show_count') ? $itemSetCount : '';
-                    if ($itemSetCount != null) {
+                    if ($itemSetCount != null && !$this->siteSetting('hierarchy_link_itemSet')) {
                         echo '<li>' . $this->hyperlink($groupingName, $this->url('site/hierarchy', ['site-slug' => $this->currentSite()->slug(), 'grouping-id' => $groupingID])) . $itemSetShow;
                     } else if ($grouping['data']['label'] == 'privateHGset') {
+                        // Don't link to hierarchies without items to display (private etc.)
                         echo '<li>' . $groupingName . ' (Private)';
                     } else {
                         // Print groupings without assigned itemSet
-                        echo '<li>' . $groupingName;
+                        echo '<li>' . $groupingName . $itemSetShow;
                     }
                 } else {
                     try {
@@ -50,7 +51,13 @@ foreach ($siteItemSets as $siteItemSet) {
                         // If no grouping label, show itemSet title as grouping heading
                         $groupingName = $grouping['data']['label'] ?: $itemSet->displayTitle(null, $valueLang);
                         if (!empty($groupingName)) {
-                            echo '<li>' . $this->hyperlink($groupingName, $this->url('site/hierarchy', ['site-slug' => $this->currentSite()->slug(), 'grouping-id' => $groupingID])) . $itemSetCount;
+                            // Point directly to associated item set if hierarchy_link_itemSet checking in config
+                            if ($this->siteSetting('hierarchy_link_itemSet')) {
+                                $groupingLink = $this->hyperlink($groupingName, $this->url('site/resource-id', ['site-slug' => $this->currentSite()->slug(), 'controller' => 'item-set', 'id' => $itemSet->id()]));
+                            } else {
+                                $groupingLink = $this->hyperlink($groupingName, $this->url('site/hierarchy', ['site-slug' => $this->currentSite()->slug(), 'grouping-id' => $grouping->id()]));
+                            }
+                            echo '<li>' . $groupingLink . $itemSetCount;
                         }
                     } catch (NotFoundException $e) {
                         // Print groupings without assigned itemSet

@@ -328,7 +328,7 @@ class HierarchyHelper extends AbstractHelper
                     $itemSetShow = $view->siteSetting('hierarchy_show_count') ? $itemSetCount : '';
 
                     if ($itemSetCount != null && (strpos($groupingLabel, '(Private)') === false)) {
-                        if ($public) {
+                        if ($public && !$view->siteSetting('hierarchy_link_itemSet')) {
                             echo '<li>' . $view->hyperlink($groupingLabel, $view->url('site/hierarchy', ['site-slug' => $view->currentSite()->slug(), 'grouping-id' => $grouping->id()])) . $itemSetShow;
                         } else {
                             // Don't link to hierarchies without items to display (private etc.)
@@ -340,6 +340,13 @@ class HierarchyHelper extends AbstractHelper
                 }
 
                 if (!is_null($itemSet)) {
+                    // Point directly to associated item set if hierarchy_link_itemSet checking in config
+                    if ($view->siteSetting('hierarchy_link_itemSet')) {
+                        $groupingLink = $view->hyperlink($groupingLabel, $view->url('site/resource-id', ['site-slug' => $view->currentSite()->slug(), 'controller' => 'item-set', 'id' => $itemSet->id()]));
+                    } else {
+                        $groupingLink = $view->hyperlink($groupingLabel, $view->url('site/hierarchy', ['site-slug' => $view->currentSite()->slug(), 'grouping-id' => $grouping->id()]));
+                    }
+
                     $itemSetArray = isset($item) ? $item->itemSets() : array($currentItemSet);
                     foreach ($itemSetArray as $itemItemSet) {
                         $itemSetIDArray[] = $itemItemSet->id();
@@ -356,13 +363,13 @@ class HierarchyHelper extends AbstractHelper
                         if (in_array($grouping->getItemSet()->id(), $itemSetIDArray)) {
                             // Bold groupings with current itemSet assigned
                             if ($public) {
-                                echo '<li><b>' . $view->hyperlink($groupingLabel, $view->url('site/hierarchy', ['site-slug' => $view->currentSite()->slug(), 'grouping-id' => $grouping->id()])) . '</b>' . $itemSetCount;
+                                echo '<li><b>' . $groupingLink . '</b>' . $itemSetCount;
                             } else {
                                 echo '<li><b>' . $itemSet->link($groupingLabel) . '</b>' . $itemSetCount;
                             }
                         } else {
                             if ($public) {
-                                echo '<li>' . $view->hyperlink($groupingLabel, $view->url('site/hierarchy', ['site-slug' => $view->currentSite()->slug(), 'grouping-id' => $grouping->id()])) . $itemSetCount;
+                                echo '<li>' . $groupingLink . $itemSetCount;
                             } else {
                                 echo '<li>' . $itemSet->link($groupingLabel) . $itemSetCount;
                             }

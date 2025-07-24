@@ -99,18 +99,25 @@ $iterate = function ($groupings, $itemSet, $siteItemSetArray) use (&$iterate, &$
         }
 
         if (!is_null($itemSet)) {
+            // Point directly to associated item set if hierarchy_link_itemSet checking in config
+            if ($this->siteSetting('hierarchy_link_itemSet')) {
+                $groupingLink = $this->hyperlink($groupingLabel, $this->url('site/resource-id', ['site-slug' => $this->currentSite()->slug(), 'controller' => 'item-set', 'id' => $itemSet->id()]));
+            } else {
+                $groupingLink = $this->hyperlink($groupingLabel, $this->url('site/hierarchy', ['site-slug' => $this->currentSite()->slug(), 'grouping-id' => $grouping->id()]));
+            }
+
             $itemSetCount = $this->hierarchyHelper()->itemSetCount($grouping, $allGroupings);
             // Show itemSet count if hierarchy_show_count checked in config
             $itemSetShow = $this->siteSetting('hierarchy_show_count') ? $itemSetCount : '';
             // Bold current page grouping
             if (!empty($groupingLabel)) {
                 if ($grouping->id() == $hierarchyGrouping->id()) {
-                    echo '<li><b>' . $this->hyperlink($groupingLabel, $this->url('site/hierarchy', ['site-slug' => $this->currentSite()->slug(), 'grouping-id' => $grouping->id()])) . '</b>' . $itemSetShow;
+                    echo '<li><b>' . $groupingLink . '</b>' . $itemSetShow;
                 } else if ($itemSetCount == null || (strpos($groupingLabel, '(Private)') !== false)) {
                     // Don't link to hierarchies without items to display (private etc.)
                     echo '<li>' . $groupingLabel;
                 } else {
-                    echo '<li>' . $this->hyperlink($groupingLabel, $this->url('site/hierarchy', ['site-slug' => $this->currentSite()->slug(), 'grouping-id' => $grouping->id()])) . $itemSetShow;
+                    echo '<li>' . $groupingLink  . $itemSetShow;
                 }
             }
         }
