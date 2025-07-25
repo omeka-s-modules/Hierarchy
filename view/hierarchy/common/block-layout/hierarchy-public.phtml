@@ -55,7 +55,7 @@ foreach ($siteItemSets as $siteItemSet) {
                             if ($this->siteSetting('hierarchy_link_itemSet')) {
                                 $groupingLink = $this->hyperlink($groupingName, $this->url('site/resource-id', ['site-slug' => $this->currentSite()->slug(), 'controller' => 'item-set', 'id' => $itemSet->id()]));
                             } else {
-                                $groupingLink = $this->hyperlink($groupingName, $this->url('site/hierarchy', ['site-slug' => $this->currentSite()->slug(), 'grouping-id' => $grouping->id()]));
+                                $groupingLink = $this->hyperlink($groupingName, $this->url('site/hierarchy', ['site-slug' => $this->currentSite()->slug(), 'grouping-id' => $groupingID]));
                             }
                             echo '<li>' . $groupingLink . $itemSetCount;
                         }

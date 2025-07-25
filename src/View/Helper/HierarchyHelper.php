@@ -341,9 +341,9 @@ class HierarchyHelper extends AbstractHelper
 
                 if (!is_null($itemSet)) {
                     // Point directly to associated item set if hierarchy_link_itemSet checking in config
-                    if ($view->siteSetting('hierarchy_link_itemSet')) {
+                    if ($view->siteSetting('hierarchy_link_itemSet') && $public) {
                         $groupingLink = $view->hyperlink($groupingLabel, $view->url('site/resource-id', ['site-slug' => $view->currentSite()->slug(), 'controller' => 'item-set', 'id' => $itemSet->id()]));
-                    } else {
+                    } else if ($public) {
                         $groupingLink = $view->hyperlink($groupingLabel, $view->url('site/hierarchy', ['site-slug' => $view->currentSite()->slug(), 'grouping-id' => $grouping->id()]));
                     }
 
