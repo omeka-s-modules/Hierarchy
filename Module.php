@@ -176,6 +176,20 @@ class Module extends AbstractModule
                 'value' => $siteSettings->get('hierarchy_link_itemSet'),
             ],
         ]);
+
+        $form->add([
+            'type' => 'checkbox',
+            'name' => 'hierarchy_show_itemSet_metadata',
+            'options' => [
+                        'element_group' => 'hierarchy',
+                        'label' => 'Show item set metadata', // @translate
+                        'info' => 'If checked, associated item set metadata will display on hierarchy grouping page.', // @translate
+                    ],
+            'attributes' => [
+                'id' => 'group-resources',
+                'value' => $siteSettings->get('hierarchy_show_itemSet_metadata'),
+            ],
+        ]);
     }
 
     /**
@@ -203,6 +217,11 @@ class Module extends AbstractModule
         ]);
         $inputFilter->add([
             'name' => 'hierarchy_link_itemSet',
+            'required' => false,
+            'allow_empty' => true,
+        ]);
+        $inputFilter->add([
+            'name' => 'hierarchy_show_itemSet_metadata',
             'required' => false,
             'allow_empty' => true,
         ]);

@@ -163,29 +163,56 @@ if ($groupings) {
         $siteItemSetArray[] = $siteItemSet->itemSet()->id();
     }
 
-    echo '<div class="hierarchy-metadata"><div class="hierarchy-filters">';
+    echo '<div class="hierarchy-sidebar-content"><div class="hierarchy-metadata"><div class="hierarchy-filters">';
     $hierarchyItemSets = $iterate($groupings, $itemSet, $siteItemSetArray);
     echo '</div>';
     echo '<div class="hierarchy-item-sets">';
 
     if (count($hierarchyItemSets) == 1) {
         echo 'Contains resources from: ';
-        foreach ($hierarchyItemSets as $itemSet) {
-            echo $itemSet->link($itemSet->displayTitle());
+        foreach ($hierarchyItemSets as $hierarchyItemSet) {
+            echo $hierarchyItemSet->link($hierarchyItemSet->displayTitle());
         }
     } else if (count($hierarchyItemSets) > 1) {
         $finalItemSet = end($hierarchyItemSets);
         echo 'Contains resources from: ';
-        foreach ($hierarchyItemSets as $itemSet) {
-            echo $itemSet->link($itemSet->displayTitle());
-            if ($itemSet != $finalItemSet) {
+        foreach ($hierarchyItemSets as $hierarchyItemSet) {
+            echo $hierarchyItemSet->link($hierarchyItemSet->displayTitle());
+            if ($hierarchyItemSet != $finalItemSet) {
                 echo ', ';
             }
         }
     }
-    echo '</div></div>';
+    echo '</div></div></div>';
 }
+
 ?>
+
+<div class="hierarchy-main-content">
+<?php
+// If hierarchy_show_itemset_metadata checked, display item set metadata
+if ($this->siteSetting('hierarchy_show_itemSet_metadata') && $itemSet):
+    $headingTerm = $this->siteSetting('browse_heading_property_term');
+    $bodyTerm = $this->siteSetting('browse_body_property_term');
+    $heading = $headingTerm ? $itemSet->value($headingTerm, ['default' => $translate('[Untitled]'), 'lang' => $valueLang]) : $itemSet->displayTitle(null, $valueLang);
+    $body = $bodyTerm ? $itemSet->value($bodyTerm, ['lang' => $valueLang]) : $itemSet->displayDescription(null, $valueLang);
+?>
+<ul class="resource-list">
+<li class="item-set resource">
+    <div class="hierarchy-itemset-metadata">
+        <?php
+        $linkContent = sprintf('%s<span class="resource-name">%s</span>',
+            $thumbnail($itemSet, 'medium'),
+            $escape($heading));
+        echo $itemSet->linkRaw($linkContent, null, ['class' => 'resource-link']);
+        ?>
+        <?php if ($body): ?>
+        <div class="description"><?php echo $escape($body); ?></div>
+        <?php endif; ?>
+    </div>
+</li>
+</ul>
+<?php endif; ?>
 
     <div class="hierarchy-items">
         <?php echo '<h3>' . $escape($translate('Items')) . '</h3>'; ?>
@@ -222,4 +249,5 @@ if ($groupings) {
         </div>
         <?php $this->trigger('view.browse.after'); ?>
     </div>
+</div>
 </div>

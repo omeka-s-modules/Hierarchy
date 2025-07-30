@@ -43,9 +43,13 @@
 
 .hierarchy-module .hierarchy-row {
     display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 100%;
 }
 
 .hierarchy-metadata {
+    flex: 0 0 100%;
     width: 30%;
     padding-right: 30px;
 }
@@ -54,10 +58,24 @@
     padding-top: 10px;
 }
 
-.hierarchy-items {
-    width: 70%;
+.hierarchy-sidebar-content {
+    display: flex;
+    flex: 1;
+}
+
+.hierarchy-main-content {
+    flex-direction: column;
+    flex: 3;
     border-left: 1px solid var(--hierarchy-border-color);
     padding-left: 30px;
+}
+
+.hierarchy-itemset-metadata {
+    padding-bottom: 30px;
+}
+
+.item-set.resource {
+    padding-bottom: 0 !important;
 }
 
 .hierarchies ul.hierarchy-list {
