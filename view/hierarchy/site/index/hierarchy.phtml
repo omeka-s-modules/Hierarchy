@@ -17,6 +17,9 @@ $this->htmlElement('body')->appendAttribute('class', 'item resource browse hiera
 if ($hierarchyGrouping->getLabel()) {
     echo $this->pageTitle($hierarchyGrouping->getLabel(), 2);
     $hierarchyHeadingLevel = 'h3';
+} else if ($hierarchyGrouping->getItemSet()) {
+    echo $this->pageTitle($hierarchyGrouping->getItemSet()->displayTitle(null, $valueLang), 2);
+    $hierarchyHeadingLevel = 'h3';
 }
 ?>
 
