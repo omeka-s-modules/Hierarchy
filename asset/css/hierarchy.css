@@ -61,6 +61,7 @@
 .hierarchy-sidebar-content {
     display: flex;
     flex: 1;
+    min-width: 35%;
 }
 
 .hierarchy-main-content {
