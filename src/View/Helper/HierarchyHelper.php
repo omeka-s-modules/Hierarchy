@@ -185,11 +185,11 @@ class HierarchyHelper extends AbstractHelper
     {
         $view = $this->getView();
         $itemSetArray = array();
-        $this->siteItemSetArray = array();
+        $siteItemSetArray = array();
 
         if ($view->currentSite()) {
             $siteItemSets = $view->currentSite()->siteItemSets();
-            $siteItemSetArray = array();
+            $this->siteItemSetArray = array();
             foreach ($siteItemSets as $siteItemSet) {
                 $this->siteItemSetArray[] = $siteItemSet->itemSet()->id();
             }
@@ -248,12 +248,13 @@ class HierarchyHelper extends AbstractHelper
         $lang = $view->lang();
         $valueLang = $filterLocale ? [$lang, ''] : null;
         static $printedGroupings = [];
+        static $siteItemSetArray = [];
         static $itemSetCounter = 0;
         $itemSetCounter++;
 
         if ($view->currentSite()) {
             $siteItemSets = $view->currentSite()->siteItemSets();
-            $siteItemSetArray = array();
+            $this->siteItemSetArray = array();
             foreach ($siteItemSets as $siteItemSet) {
                 $this->siteItemSetArray[] = $siteItemSet->itemSet()->id();
             }
