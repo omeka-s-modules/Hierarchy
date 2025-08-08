@@ -189,7 +189,6 @@ class HierarchyHelper extends AbstractHelper
 
         if ($view->currentSite()) {
             $siteItemSets = $view->currentSite()->siteItemSets();
-            $this->siteItemSetArray = array();
             foreach ($siteItemSets as $siteItemSet) {
                 $this->siteItemSetArray[] = $siteItemSet->itemSet()->id();
             }
@@ -201,7 +200,7 @@ class HierarchyHelper extends AbstractHelper
                 if ($currentGrouping->getItemSet()) {
                     try {
                         // Ignore item sets not assigned to site
-                        if ($this->siteItemSetArray && !in_array($currentGrouping->getItemSet()->id(), $this->siteItemSetArray)) {
+                        if (!empty($this->siteItemSetArray) && !in_array($currentGrouping->getItemSet()->id(), $this->siteItemSetArray)) {
                             throw new Exception\NotFoundException;
                         }
                         $itemSet = $currentGrouping->getItemSet() ? $view->api()->read('item_sets', $currentGrouping->getItemSet()->id())->getContent() : null;
