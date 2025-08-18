@@ -9,6 +9,8 @@ use Laminas\Form\Form;
 
 class HierarchyHelper extends AbstractHelper
 {
+    protected $siteItemSetArray;
+
     /**
      * Return the HTML necessary to render all hierarchy form elements.
      *
@@ -43,7 +45,7 @@ class HierarchyHelper extends AbstractHelper
             'delete' => 0,
         ];
         $data = $hierarchy ? $hierarchy->getJsonLd() + $defaults : $defaults;
-        
+
         $form->add([
             'name' => 'hierarchy[__hierarchyIndex__][label]',
             'type' => Element\Text::class,
