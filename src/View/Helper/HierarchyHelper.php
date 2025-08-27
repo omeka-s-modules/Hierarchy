@@ -190,17 +190,17 @@ class HierarchyHelper extends AbstractHelper
         if ($view->currentSite()) {
             $siteItemSets = $view->currentSite()->siteItemSets();
             foreach ($siteItemSets as $siteItemSet) {
-                $this->siteItemSetArray[] = $siteItemSet->itemSet()->id();
+                $siteItemSetArray[] = $siteItemSet->itemSet()->id();
             }
         }
 
         // Gather all 'child' itemSets if hierarchy_group_resources checked in site config OR if called from admin side
         if ($view->status()->isAdminRequest() || $view->siteSetting('hierarchy_group_resources')) {
-            $iterate = function ($currentGrouping) use ($view, $allGroupings, &$iterate, &$itemSetArray) {
+            $iterate = function ($currentGrouping) use ($view, $allGroupings, &$iterate, &$itemSetArray, $siteItemSetArray) {
                 if ($currentGrouping->getItemSet()) {
                     try {
                         // Ignore item sets not assigned to site
-                        if (!empty($this->siteItemSetArray) && !in_array($currentGrouping->getItemSet()->id(), $this->siteItemSetArray)) {
+                        if (!empty($siteItemSetArray) && !in_array($currentGrouping->getItemSet()->id(), $siteItemSetArray)) {
                             throw new Exception\NotFoundException;
                         }
                         $itemSet = $currentGrouping->getItemSet() ? $view->api()->read('item_sets', $currentGrouping->getItemSet()->id())->getContent() : null;
@@ -222,7 +222,7 @@ class HierarchyHelper extends AbstractHelper
             if ($currentGrouping->getItemSet()) {
                 try {
                     // Ignore item sets not assigned to site
-                    if ($this->siteItemSetArray && !in_array($currentGrouping->getItemSet()->id(), $this->siteItemSetArray)) {
+                    if (!empty($siteItemSetArray) && !in_array($currentGrouping->getItemSet()->id(), $siteItemSetArray)) {
                         throw new Exception\NotFoundException;
                     }
                     $itemSet = $currentGrouping->getItemSet() ? $view->api()->read('item_sets', $currentGrouping->getItemSet()->id())->getContent() : null;
@@ -253,15 +253,15 @@ class HierarchyHelper extends AbstractHelper
 
         if ($view->currentSite()) {
             $siteItemSets = $view->currentSite()->siteItemSets();
-            $this->siteItemSetArray = array();
+            $siteItemSetArray = array();
             foreach ($siteItemSets as $siteItemSet) {
-                $this->siteItemSetArray[] = $siteItemSet->itemSet()->id();
+                $siteItemSetArray[] = $siteItemSet->itemSet()->id();
             }
         } else {
-            $this->siteItemSetArray = array();
+            $siteItemSetArray = array();
         }
 
-        $iterate = function ($groupings) use ($view, $currentItemSet, $item, $public, $valueLang, &$itemSetCounter, &$iterate, &$allGroupings, &$printedGroupings, &$currentHierarchy, &$childCount) {
+        $iterate = function ($groupings) use ($view, $currentItemSet, $item, $public, $valueLang, &$itemSetCounter, &$iterate, &$allGroupings, &$printedGroupings, &$currentHierarchy, &$childCount, $siteItemSetArray) {
             foreach ($groupings as $key => $grouping) {
                 // Continue if grouping has already been printed
                 if (isset($printedGroupings) && in_array($grouping, $printedGroupings)) {
@@ -298,7 +298,7 @@ class HierarchyHelper extends AbstractHelper
                 if ($grouping->getItemSet()) {
                     try {
                         // Ignore item sets not assigned to site
-                        if (!empty($this->siteItemSetArray) && !in_array($grouping->getItemSet()->id(), $this->siteItemSetArray)) {
+                        if (!empty($siteItemSetArray) && !in_array($grouping->getItemSet()->id(), $siteItemSetArray)) {
                             throw new Exception\NotFoundException;
                         }
                         // If no grouping label, show itemSet title as grouping heading
