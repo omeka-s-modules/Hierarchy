@@ -75,6 +75,8 @@ class Module extends AbstractModule
             $siteSettings->delete('hierarchy_show_label');
             $siteSettings->delete('hierarchy_show_count');
             $siteSettings->delete('hierarchy_group_resources');
+            $siteSettings->delete('hierarchy_link_itemSet');
+            $siteSettings->delete('hierarchy_show_itemSet_metadata');
             $siteSettings->delete('site_hierarchies');
         }
     }
