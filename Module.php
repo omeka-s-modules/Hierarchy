@@ -151,17 +151,28 @@ class Module extends AbstractModule
             ],
         ]);
 
+        // Disable combined resources when linking directly to itemSet
+        // to not misrepresent # of resources contained within linked itemSet
+        if ($siteSettings->get('hierarchy_link_itemSet') == true) {
+            $disableCombined = true;
+            $combined = 'false';
+        } else {
+            $disableCombined = false;
+            $combined = $siteSettings->get('hierarchy_group_resources');
+        }
+
         $form->add([
             'type' => 'checkbox',
             'name' => 'hierarchy_group_resources',
             'options' => [
                         'element_group' => 'hierarchy',
                         'label' => 'Combine hierarchy resources', // @translate
-                        'info' => 'If checked, groupings will display resources of all child groupings in resource counts and on hierarchy grouping browse pages.', // @translate
+                        'info' => 'If checked, groupings will display resources of all child groupings in resource counts and on hierarchy grouping browse pages. This option is disabled when "Link directly to item set" is checked, to avoid displaying an inaccurate count of Item Set resources.', // @translate
                     ],
             'attributes' => [
                 'id' => 'group-resources',
-                'value' => $siteSettings->get('hierarchy_group_resources', true),
+                'disabled' => $disableCombined,
+                'value' => $combined,
             ],
         ]);
 
