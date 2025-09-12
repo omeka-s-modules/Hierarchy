@@ -49,7 +49,7 @@ class Module extends AbstractModule
         $sites = $api->search('sites', [])->getContent();
         $siteSettings = $serviceLocator->get('Omeka\Settings\Site');
 
-        // Turn all hierarchy site view settings on by default
+        // Set defaults for hierarchy view settings
         foreach ($sites as $site) {
             $siteSettings->setTargetId($site->id());
             $siteSettings->set('hierarchy_show_label', '1');
@@ -75,6 +75,7 @@ class Module extends AbstractModule
             $siteSettings->delete('hierarchy_show_label');
             $siteSettings->delete('hierarchy_show_count');
             $siteSettings->delete('hierarchy_group_resources');
+            $siteSettings->delete('hierarchy_display_itemSets');
             $siteSettings->delete('hierarchy_link_itemSet');
             $siteSettings->delete('hierarchy_show_itemSet_metadata');
             $siteSettings->delete('site_hierarchies');
@@ -178,6 +179,20 @@ class Module extends AbstractModule
 
         $form->add([
             'type' => 'checkbox',
+            'name' => 'hierarchy_display_itemSets',
+            'options' => [
+                        'element_group' => 'hierarchy',
+                        'label' => 'Show item sets beneath hierarchy', // @translate
+                        'info' => 'If checked, all item sets assigned to hierarchy will display beneath hierarchy tree.', // @translate
+                    ],
+            'attributes' => [
+                'id' => 'display-itemsets',
+                'value' => $siteSettings->get('hierarchy_display_itemSets'),
+            ],
+        ]);
+
+        $form->add([
+            'type' => 'checkbox',
             'name' => 'hierarchy_link_itemSet',
             'options' => [
                         'element_group' => 'hierarchy',
@@ -185,7 +200,7 @@ class Module extends AbstractModule
                         'info' => 'If checked, public hierarchy links will point directly to associated item set page instead of hierarchy grouping page.', // @translate
                     ],
             'attributes' => [
-                'id' => 'group-resources',
+                'id' => 'link-itemset',
                 'value' => $siteSettings->get('hierarchy_link_itemSet'),
             ],
         ]);
@@ -199,7 +214,7 @@ class Module extends AbstractModule
                         'info' => 'If checked, associated item set metadata will display on hierarchy grouping page.', // @translate
                     ],
             'attributes' => [
-                'id' => 'group-resources',
+                'id' => 'show-metadata',
                 'value' => $siteSettings->get('hierarchy_show_itemSet_metadata'),
             ],
         ]);
@@ -225,6 +240,11 @@ class Module extends AbstractModule
         ]);
         $inputFilter->add([
             'name' => 'hierarchy_group_resources',
+            'required' => false,
+            'allow_empty' => true,
+        ]);
+        $inputFilter->add([
+            'name' => 'hierarchy_display_itemSets',
             'required' => false,
             'allow_empty' => true,
         ]);

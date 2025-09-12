@@ -55,6 +55,36 @@ if (!$siteGroupings) {
             <?php foreach ($siteGroupings as $groupings): ?>
             <?php echo $this->hierarchyHelper()->buildNestedList($groupings, $itemSet, $item, true); ?>
             <?php endforeach; ?>
+            <?php if ($this->siteSetting('hierarchy_display_itemSets')) {
+                foreach ($siteGroupings as $groupings) {
+                    foreach ($groupings as $siteGrouping) {
+                        $allGroupings = $this->api()->search('hierarchy_grouping', ['hierarchy' => $siteGrouping->getHierarchy(), 'sort_by' => 'position'])->getContent();
+                        foreach ($allGroupings as $grouping) {
+                            if ($grouping->getItemSet()) {
+                                $itemSet = $this->api()->read('item_sets', $grouping->getItemSet()->id())->getContent();
+                                $hierarchyItemSets[] = $itemSet;
+                            }
+                        }
+                    }
+                }
+                echo '<span>';
+                if (count($hierarchyItemSets) == 1) {
+                    echo 'Contains resources from: ';
+                    foreach ($hierarchyItemSets as $hierarchyItemSet) {
+                        echo $hierarchyItemSet->link($hierarchyItemSet->displayTitle());
+                    }
+                } else if (count($hierarchyItemSets) > 1) {
+                    $finalItemSet = end($hierarchyItemSets);
+                    echo 'Contains resources from: ';
+                    foreach ($hierarchyItemSets as $hierarchyItemSet) {
+                        echo $hierarchyItemSet->link($hierarchyItemSet->displayTitle());
+                        if ($hierarchyItemSet != $finalItemSet) {
+                            echo ', ';
+                        }
+                    }
+                }
+                echo '</span>';
+            } ?>
         </dd>
     </div>
 </dl>

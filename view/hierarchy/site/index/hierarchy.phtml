@@ -169,24 +169,28 @@ if ($groupings) {
     echo '<div class="hierarchy-sidebar-content"><div class="hierarchy-metadata"><div class="hierarchy-filters">';
     $hierarchyItemSets = $iterate($groupings, $itemSet, $siteItemSetArray);
     echo '</div>';
-    echo '<div class="hierarchy-item-sets">';
 
-    if (count($hierarchyItemSets) == 1) {
-        echo 'Contains resources from: ';
-        foreach ($hierarchyItemSets as $hierarchyItemSet) {
-            echo $hierarchyItemSet->link($hierarchyItemSet->displayTitle());
-        }
-    } else if (count($hierarchyItemSets) > 1) {
-        $finalItemSet = end($hierarchyItemSets);
-        echo 'Contains resources from: ';
-        foreach ($hierarchyItemSets as $hierarchyItemSet) {
-            echo $hierarchyItemSet->link($hierarchyItemSet->displayTitle());
-            if ($hierarchyItemSet != $finalItemSet) {
-                echo ', ';
+    if ($this->siteSetting('hierarchy_display_itemSets')) {
+        echo '<div class="hierarchy-item-sets">';
+        if (count($hierarchyItemSets) == 1) {
+            echo 'Contains resources from: ';
+            foreach ($hierarchyItemSets as $hierarchyItemSet) {
+                echo $hierarchyItemSet->link($hierarchyItemSet->displayTitle());
+            }
+        } else if (count($hierarchyItemSets) > 1) {
+            $finalItemSet = end($hierarchyItemSets);
+            echo 'Contains resources from: ';
+            foreach ($hierarchyItemSets as $hierarchyItemSet) {
+                echo $hierarchyItemSet->link($hierarchyItemSet->displayTitle());
+                if ($hierarchyItemSet != $finalItemSet) {
+                    echo ', ';
+                }
             }
         }
+        echo '</div>';
     }
-    echo '</div></div></div>';
+
+    echo '</div></div>';
 }
 
 ?>

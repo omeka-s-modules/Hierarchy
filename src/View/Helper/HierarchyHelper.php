@@ -413,5 +413,7 @@ class HierarchyHelper extends AbstractHelper
         };
         $iterate($groupings, $currentItemSet);
         $printedGroupings = [];
+
+        echo '</ul>';
     }
 }
