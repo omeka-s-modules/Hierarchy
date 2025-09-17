@@ -19,7 +19,7 @@ foreach ($siteItemSets as $siteItemSet) {
     }
     ?>
     <ul class="hierarchy-list">
-        <?php $iterate = function ($groupings) use (&$iterate, $allGroupings, $valueLang, $siteItemSetArray) {
+        <?php $iterate = function ($groupings) use (&$iterate, &$groupingSets, $allGroupings, $valueLang, $siteItemSetArray) {
             foreach ($groupings as $grouping) {
                 $groupingSet = $grouping['data']['itemSet'];
                 $groupingID = $grouping['data']['groupingID'];
@@ -50,6 +50,7 @@ foreach ($siteItemSets as $siteItemSet) {
                         $itemSetCount = $this->siteSetting('hierarchy_show_count') ? $this->hierarchyHelper()->itemSetCount($groupingObject, $allGroupings) : '';
                         // If no grouping label, show itemSet title as grouping heading
                         $groupingName = $grouping['data']['label'] ?: $itemSet->displayTitle(null, $valueLang);
+                        $groupingSets[] = $itemSet;
                         if (!empty($groupingName)) {
                             // Point directly to associated item set if hierarchy_link_itemSet checking in config
                             if ($this->siteSetting('hierarchy_link_itemSet')) {
@@ -71,7 +72,27 @@ foreach ($siteItemSets as $siteItemSet) {
                     echo '</ul>';
                 }
             }
+            return $groupingSets;
         };
-        $iterate($hierarchyData); ?>
+        $groupingItemSets = $iterate($hierarchyData); ?>
     </ul>
 </div>
+<?php if (isset($groupingItemSets) && $this->siteSetting('hierarchy_display_itemSets')) {
+    echo '<div class="hierarchy-item-sets">';
+    if (count($groupingItemSets) == 1) {
+        echo 'Contains resources from: ';
+        foreach ($groupingItemSets as $groupingItemSet) {
+            echo $groupingItemSet->link($groupingItemSet->displayTitle());
+        }
+    } else if (count($groupingItemSets) > 1) {
+        $finalItemSet = end($groupingItemSets);
+        echo 'Contains resources from: ';
+        foreach ($groupingItemSets as $groupingItemSet) {
+            echo $groupingItemSet->link($groupingItemSet->displayTitle());
+            if ($groupingItemSet != $finalItemSet) {
+                echo ', ';
+            }
+        }
+    }
+    echo '</div>';
+} ?>
