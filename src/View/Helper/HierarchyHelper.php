@@ -352,26 +352,28 @@ class HierarchyHelper extends AbstractHelper
                         $itemSetIDArray[] = $itemItemSet->id();
                     }
 
+                    $itemSetCount = $this->itemSetCount($grouping, $allGroupings);
+
                     // Show (combined child) itemSet count if hierarchy_show_count checked in site config OR if called from admin side
                     if ($view->status()->isAdminRequest() || $view->siteSetting('hierarchy_show_count')) {
-                        $itemSetCount = $this->itemSetCount($grouping, $allGroupings);
+                        $itemSetShow = $itemSetCount;
                     } else {
-                        $itemSetCount = '';
+                        $itemSetShow = '';
                     }
 
                     if ($itemSetCount != null && (strpos($groupingLabel, '(Private)') === false)) {
                         if (in_array($grouping->getItemSet()->id(), $itemSetIDArray)) {
                             // Bold groupings with current itemSet assigned
                             if ($public) {
-                                echo '<li><b>' . $groupingLink . '</b>' . $itemSetCount;
+                                echo '<li><b>' . $groupingLink . '</b>' . $itemSetShow;
                             } else {
-                                echo '<li><b>' . $itemSet->link($groupingLabel) . '</b>' . $itemSetCount;
+                                echo '<li><b>' . $itemSet->link($groupingLabel) . '</b>' . $itemSetShow;
                             }
                         } else {
                             if ($public) {
-                                echo '<li>' . $groupingLink . $itemSetCount;
+                                echo '<li>' . $groupingLink . $itemSetShow;
                             } else {
-                                echo '<li>' . $itemSet->link($groupingLabel) . $itemSetCount;
+                                echo '<li>' . $itemSet->link($groupingLabel) . $itemSetShow;
                             }
                         }
                     } else {
