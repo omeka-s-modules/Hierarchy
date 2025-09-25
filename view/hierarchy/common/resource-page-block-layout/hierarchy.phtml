@@ -61,8 +61,13 @@ if (!$siteGroupings) {
                         $allGroupings = $this->api()->search('hierarchy_grouping', ['hierarchy' => $siteGrouping->getHierarchy(), 'sort_by' => 'position'])->getContent();
                         foreach ($allGroupings as $grouping) {
                             if ($grouping->getItemSet()) {
-                                $itemSet = $this->api()->read('item_sets', $grouping->getItemSet()->id())->getContent();
-                                $hierarchyItemSets[] = $itemSet;
+                                try {
+                                    $itemSet = $this->api()->read('item_sets', $grouping->getItemSet()->id())->getContent();
+                                    $hierarchyItemSets[] = $itemSet;
+                                } catch (\Exception $e) {
+                                    // ItemSet not found or private
+                                    continue;
+                                }
                             }
                         }
                     }
