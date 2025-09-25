@@ -74,7 +74,8 @@ foreach ($siteItemSets as $siteItemSet) {
             }
             return $groupingSets;
         };
-        $groupingItemSets = $iterate($hierarchyData); ?>
+        $groupingItemSets = $iterate($hierarchyData);
+        $groupingItemSets = array_unique($groupingItemSets, SORT_REGULAR); ?>
     </ul>
 </div>
 <?php if (isset($groupingItemSets) && $this->siteSetting('hierarchy_display_itemSets')) {

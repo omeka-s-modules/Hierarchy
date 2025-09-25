@@ -67,6 +67,7 @@ if (!$siteGroupings) {
                         }
                     }
                 }
+                $hierarchyItemSets = array_unique($hierarchyItemSets, SORT_REGULAR);
                 echo '<span>';
                 if (count($hierarchyItemSets) == 1) {
                     echo 'Contains resources from: ';
