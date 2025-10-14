@@ -126,6 +126,20 @@ class Module extends AbstractModule
 
         $form->add([
             'type' => 'checkbox',
+            'name' => 'hierarchy_link_itemSet',
+            'options' => [
+                        'element_group' => 'hierarchy',
+                        'label' => 'Link directly to item set', // @translate
+                        'info' => 'If checked, public hierarchy links will point directly to associated item set page instead of hierarchy grouping page.', // @translate
+                    ],
+            'attributes' => [
+                'id' => 'link-itemset',
+                'value' => $siteSettings->get('hierarchy_link_itemSet'),
+            ],
+        ]);
+
+        $form->add([
+            'type' => 'checkbox',
             'name' => 'hierarchy_show_label',
             'options' => [
                         'element_group' => 'hierarchy',
@@ -193,24 +207,10 @@ class Module extends AbstractModule
 
         $form->add([
             'type' => 'checkbox',
-            'name' => 'hierarchy_link_itemSet',
-            'options' => [
-                        'element_group' => 'hierarchy',
-                        'label' => 'Link directly to item set', // @translate
-                        'info' => 'If checked, public hierarchy links will point directly to associated item set page instead of hierarchy grouping page.', // @translate
-                    ],
-            'attributes' => [
-                'id' => 'link-itemset',
-                'value' => $siteSettings->get('hierarchy_link_itemSet'),
-            ],
-        ]);
-
-        $form->add([
-            'type' => 'checkbox',
             'name' => 'hierarchy_show_itemSet_metadata',
             'options' => [
                         'element_group' => 'hierarchy',
-                        'label' => 'Show item set metadata', // @translate
+                        'label' => 'Show item set metadata on grouping page', // @translate
                         'info' => 'If checked, associated item set metadata will display on hierarchy grouping page.', // @translate
                     ],
             'attributes' => [
