@@ -19,10 +19,20 @@ return [
         ],
     ],
     'controllers' => [
+        'factories' => [
+            'Hierarchy\Controller\Index' => 'Hierarchy\Service\Controller\IndexControllerFactory',
+        ],
         'invokables' => [
-            'Hierarchy\Controller\Index' => 'Hierarchy\Controller\IndexController',
             'Hierarchy\Controller\SiteAdmin\Index' => 'Hierarchy\Controller\SiteAdmin\IndexController',
             'Hierarchy\Controller\Site\Index' => 'Hierarchy\Controller\Site\IndexController',
+        ],
+    ],
+    'service_manager' => [
+        'factories' => [
+            \Hierarchy\Service\HierarchyUpdater\HierarchyUpdater::class => \Hierarchy\Service\HierarchyUpdater\HierarchyUpdaterFactory::class,
+        ],
+        'aliases' => [
+            \Hierarchy\Service\HierarchyUpdater::class => \Hierarchy\Service\HierarchyUpdater\HierarchyUpdater::class,
         ],
     ],
     'view_manager' => [
