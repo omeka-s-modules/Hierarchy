@@ -12,13 +12,15 @@ class HierarchyUpdater
     /** @var Settings */
     protected $siteSettings;
 
+    protected $response;
+
     public function __construct(ApiManager $api, Settings $siteSettings)
     {
         $this->api = $api;
         $this->siteSettings = $siteSettings;
     }
 
-    public function updateHierarchy(array $hierarchyData): void
+    public function updateHierarchy(array $hierarchyData)
     {
         $hierarchyID = isset($hierarchyData['id']) ? (int) $hierarchyData['id'] : 0;
         $content = $this->api->search('hierarchy', ['id' => $hierarchyID])->getContent();
@@ -41,12 +43,14 @@ class HierarchyUpdater
             }
         } elseif (empty($content)) {
             $hierarchyResponse = $this->api->create('hierarchy', $hierarchyData);
-            $hierarchyData['id'] = $hierarchyResponse ? $hierarchyResponse->getContent()->id() : null;
+            $hierarchyID = $hierarchyResponse ? $hierarchyResponse->getContent()->id() : null;
+            $hierarchyData['id'] = $hierarchyID;
             $this->updateTreeData($hierarchyData);
         } else {
             $this->api->update('hierarchy', $hierarchyID, $hierarchyData);
             $this->updateTreeData($hierarchyData);
         }
+        return $hierarchyID;
     }
     
     public function updateTreeData($hierarchyData)
