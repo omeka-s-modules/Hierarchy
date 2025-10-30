@@ -23,7 +23,7 @@
         }).on('loaded.jstree', function() {
             // Open all nodes by default.
             hierarchyTree.jstree(true).open_all();
-            initialTreeData = JSON.stringify(hierarchyTree.jstree(true).get_json());
+            initialTreeData = getTreeData(hierarchyTree.jstree(true));
         }).on('move_node.jstree', function(e, data) {
             // Open node after moving it.
             var parent = hierarchyTree.jstree(true).get_node(data.parent);
@@ -31,10 +31,33 @@
         });
 
         $('#hierarchy-form').on('o:before-form-unload', function () {
-            if (initialTreeData !== JSON.stringify(hierarchyTree.jstree(true).get_json())) {
+            var treeInstance = hierarchyTree.jstree(true);
+            // Pull in current data from hierarchy inputs before comparing data
+            hierarchyTree.find('input[data-name], select[data-name]').each(function(index, element) {
+                var nodeObj = treeInstance.get_node(element);
+                var element = $(element);
+                value = element.val();
+                if (element.data('name') === 'itemSet' && value !== '') {
+                    value = parseInt(value, 10);
+                }
+                nodeObj.data[element.data('name')] = value;
+            });
+            if (initialTreeData !== getTreeData(treeInstance)) {
                 Omeka.markDirty(this);
             }
         });
+    }
+    
+    var getTreeData = function(tree) {
+        var treeJson = tree.get_json();
+        function deleteState (nodes) {
+            nodes.forEach(function (node) {
+                delete node.state;
+                deleteState(node.children);
+            });
+        }
+        deleteState(treeJson);
+        return JSON.stringify(treeJson);
     }
 
     function replaceIndex(context, find, index) {
@@ -114,7 +137,11 @@
                     var nodeObj = thisJstree.get_node(element);
                     var element = $(element);
                     if (element.val()) {
-                        nodeObj.data[element.data('name')] = element.val();
+                        value = element.val();
+                        if (element.data('name') === 'itemSet' && value !== '') {
+                            value = parseInt(value, 10);
+                        }
+                        nodeObj.data[element.data('name')] = value;
                     }
                     // Pass empty label and itemSet values to be handled by IndexController
                     if (element.data('name') == 'label' && !element.val()) {
@@ -124,15 +151,17 @@
                         nodeObj.data[element.data('name')] = '';
                     }
                 });
-                // Disable 'deleted' nodes and any descendants to mark for deletion in DB
+                // Mark 'deleted' nodes and any descendents for deletion in DB
                 thisHierarchy.find('.jstree-node').each(function(index, element) {
                     if (element.classList.contains('jstree-removenode-removed')) {
-                        thisJstree.disable_node(element);
+                        var nodeObj = thisJstree.get_node(element);
+                        nodeObj.data['delete'] = true;
                         var descendants = thisJstree.get_json(element, { 'flat': true });
                         $.each(descendants, function (i, node) {
-                            thisJstree.disable_node(thisJstree.get_node(node));
+                            var nodeObj = thisJstree.get_node(node);
+                            nodeObj.data['delete'] = true;
                         })
-                    };
+                    }
                 });
                 var jsTreeData = JSON.stringify(thisJstree.get_json());
                 // Remove any newly added nodes marked for deletion

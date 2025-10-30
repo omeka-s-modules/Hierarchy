@@ -116,7 +116,7 @@ class HierarchyHelper extends AbstractHelper
                     'text' => $nodeText,
                     'data' => [
                         'label' => $grouping->getLabel() ?: '',
-                        'itemSet' => $groupingItemSet,
+                        'itemSet' => (int) $groupingItemSet,
                         'groupingID' => $grouping->id(),
                         'position' => $grouping->getPosition(),
                     ],
