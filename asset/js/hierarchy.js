@@ -37,8 +37,12 @@
                 var nodeObj = treeInstance.get_node(element);
                 var element = $(element);
                 value = element.val();
-                if (element.data('name') === 'itemSet' && value !== '') {
-                    value = parseInt(value, 10);
+                if (element.data('name') === 'itemSet') {
+                    if (value !== '') {
+                        value = parseInt(value, 10);
+                    } else {
+                        value = 0;
+                    }
                 }
                 nodeObj.data[element.data('name')] = value;
             });

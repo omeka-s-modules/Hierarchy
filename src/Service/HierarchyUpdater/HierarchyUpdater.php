@@ -61,7 +61,7 @@ class HierarchyUpdater
                 $groupingID = isset($grouping['data']['groupingID']) ? $grouping['data']['groupingID'] : null;
                 $groupingDelete = $grouping['data']['delete'];
                 // Ignore private item sets if returned
-                $groupingData['item_set'] = (!isset($grouping['data']['itemSet']) || $grouping['data']['itemSet'] == 'privateHGset') ? null : $grouping['data']['itemSet'];
+                $groupingData['item_set'] = (empty($grouping['data']['itemSet']) || $grouping['data']['itemSet'] == 'privateHGset') ? null : $grouping['data']['itemSet'];
                 $groupingData['hierarchy'] = $hierarchyID;
                 $groupingData['parent_grouping'] = $parentGrouping ?: '';
                 $groupingData['label'] = isset($grouping['data']['label']) ? $grouping['data']['label'] : '';
