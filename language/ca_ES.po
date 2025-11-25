@@ -4,16 +4,16 @@
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 # 
 # Translators:
-# Rubén Alcaraz Martínez <rubenalcarazmartinez@gmail.com>, 2024
+# Rubén Alcaraz Martínez <rubenalcarazmartinez@gmail.com>, 2025
 # 
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-04-23 10:59-0700\n"
+"POT-Creation-Date: 2025-11-05 16:09-0800\n"
 "PO-Revision-Date: 2024-10-28 21:07+0000\n"
-"Last-Translator: Rubén Alcaraz Martínez <rubenalcarazmartinez@gmail.com>, 2024\n"
+"Last-Translator: Rubén Alcaraz Martínez <rubenalcarazmartinez@gmail.com>, 2025\n"
 "Language-Team: Catalan (Spain) (https://app.transifex.com/omeka/teams/14184/ca_ES/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -21,7 +21,7 @@ msgstr ""
 "Language: ca_ES\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: Module.php:202 Module.php:241
+#: Module.php:295 Module.php:318
 #: view/hierarchy/common/resource-page-block-layout/hierarchy.phtml:53
 #: view/hierarchy/site-admin/index/index.phtml:41
 msgid "Hierarchies"
@@ -33,18 +33,18 @@ msgstr "(No s'ha assignat cap jerarquia de llocs)"
 
 #: src/Site/BlockLayout/Hierarchy.php:54 view/hierarchy/index/index.phtml:11
 msgid "Hierarchy"
-msgstr "Jerarquia"
+msgstr "Hierarchy"
 
 #: src/View/Helper/HierarchyHelper.php:309
-#: view/hierarchy/common/block-layout/hierarchy-public.phtml:57
-#: view/hierarchy/site/index/hierarchy.phtml:73
+#: view/hierarchy/common/block-layout/hierarchy-public.phtml:65
+#: view/hierarchy/site/index/hierarchy.phtml:76
 msgid " (Private)"
-msgstr ""
+msgstr "(Privat)"
 
 #: src/View/Helper/HierarchyHelper.php:309
-#: view/hierarchy/common/block-layout/hierarchy-public.phtml:57
+#: view/hierarchy/common/block-layout/hierarchy-public.phtml:65
 msgid "[Untitled] (Private)"
-msgstr ""
+msgstr "[Sense títol] (Privat)"
 
 #: view/hierarchy/common/hierarchy.phtml:10
 msgid "Hierarchy to be removed"
@@ -80,6 +80,8 @@ msgid ""
 "Drag & drop to change the order in which hierarchies appear on site resource"
 " pages."
 msgstr ""
+"Arrossegueu i deixeu anar per modificar l'ordre de les jerarquies a les "
+"pàgines de recursos del lloc."
 
 #: view/hierarchy/site-admin/index/index.phtml:32
 msgid "No hierarchies are assigned to this site."
@@ -93,26 +95,36 @@ msgstr "Feu clic sobre una jerarquia per afegir-la al bloc d'edició."
 msgid "Filter hierarchies"
 msgstr "Filtra les jerarquies"
 
-#: view/hierarchy/site/index/hierarchy.phtml:73
+#: view/hierarchy/site/index/hierarchy.phtml:76
 msgid "(Private)"
+msgstr "(Privat)"
+
+#: Module.php:132
+msgid "Link directly to item set"
 msgstr ""
 
-#: Module.php:129
+#: Module.php:133
+msgid ""
+"If checked, public hierarchy links will point directly to associated item "
+"set page instead of hierarchy grouping page."
+msgstr ""
+
+#: Module.php:146
 msgid "Show hierarchy label"
 msgstr "Mostra l'etiqueta de la jerarquia"
 
-#: Module.php:130
+#: Module.php:147
 msgid ""
 "If checked, assigned label will display as hierarchy header on public pages."
 msgstr ""
 "Si està marcada, l'etiqueta assignada es mostrarà com a encapçalament de la "
 "jerarquia a les pàgines públiques."
 
-#: Module.php:143
+#: Module.php:160
 msgid "Show hierarchy resource counts"
 msgstr "Mostra el nombre de jerarquies"
 
-#: Module.php:144
+#: Module.php:161
 msgid ""
 "If checked, hierarchy groupings will show # of resources within currently "
 "assigned itemSet."
@@ -120,20 +132,39 @@ msgstr ""
 "Si està marcada, els agrupaments de jerarquia mostraran el nombre de "
 "recursos dins del conjunt de recursos assignat."
 
-#: Module.php:157
+#: Module.php:184
 msgid "Combine hierarchy resources"
 msgstr "Mostra l'etiqueta de la jerarquia"
 
-#: Module.php:158
+#: Module.php:185
 msgid ""
 "If checked, groupings will display resources of all child groupings in "
-"resource counts and on hierarchy grouping browse pages."
+"resource counts and on hierarchy grouping browse pages. This option is "
+"disabled when \"Link directly to item set\" is checked, to avoid displaying "
+"an inaccurate count of Item Set resources."
 msgstr ""
-"Si està marcada, els agrupaments mostraran els recursos de tots els "
-"agrupaments fills en el recompte de recursos i en les pàgines de navegació "
-"d'agrupament jeràrquic."
 
-#: src/Controller/IndexController.php:65
+#: Module.php:199
+msgid "Show item sets beneath hierarchy"
+msgstr ""
+
+#: Module.php:200
+msgid ""
+"If checked, all item sets assigned to hierarchy will display beneath "
+"hierarchy tree."
+msgstr ""
+
+#: Module.php:213
+msgid "Show item set metadata on grouping page"
+msgstr ""
+
+#: Module.php:214
+msgid ""
+"If checked, associated item set metadata will display on hierarchy grouping "
+"page."
+msgstr ""
+
+#: src/Controller/IndexController.php:44
 msgid "Hierarchy successfully updated"
 msgstr "La jerarquia s'ha actualitzat correctament"
 
