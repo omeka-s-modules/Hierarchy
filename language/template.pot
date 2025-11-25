@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-04-23 10:59-0700\n"
+"POT-Creation-Date: 2025-11-05 16:09-0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: Module.php:202 Module.php:241
+#: Module.php:295 Module.php:318
 #: view/hierarchy/common/resource-page-block-layout/hierarchy.phtml:53
 #: view/hierarchy/site-admin/index/index.phtml:41
 msgid "Hierarchies"
@@ -32,13 +32,13 @@ msgid "Hierarchy"
 msgstr ""
 
 #: src/View/Helper/HierarchyHelper.php:309
-#: view/hierarchy/common/block-layout/hierarchy-public.phtml:57
-#: view/hierarchy/site/index/hierarchy.phtml:73
+#: view/hierarchy/common/block-layout/hierarchy-public.phtml:65
+#: view/hierarchy/site/index/hierarchy.phtml:76
 msgid " (Private)"
 msgstr ""
 
 #: src/View/Helper/HierarchyHelper.php:309
-#: view/hierarchy/common/block-layout/hierarchy-public.phtml:57
+#: view/hierarchy/common/block-layout/hierarchy-public.phtml:65
 msgid "[Untitled] (Private)"
 msgstr ""
 
@@ -89,40 +89,72 @@ msgstr ""
 msgid "Filter hierarchies"
 msgstr ""
 
-#: view/hierarchy/site/index/hierarchy.phtml:73
+#: view/hierarchy/site/index/hierarchy.phtml:76
 msgid "(Private)"
 msgstr ""
 
-#: Module.php:129
+#: Module.php:132
+msgid "Link directly to item set"
+msgstr ""
+
+#: Module.php:133
+msgid ""
+"If checked, public hierarchy links will point directly to associated item "
+"set page instead of hierarchy grouping page."
+msgstr ""
+
+#: Module.php:146
 msgid "Show hierarchy label"
 msgstr ""
 
-#: Module.php:130
+#: Module.php:147
 msgid ""
 "If checked, assigned label will display as hierarchy header on public pages."
 msgstr ""
 
-#: Module.php:143
+#: Module.php:160
 msgid "Show hierarchy resource counts"
 msgstr ""
 
-#: Module.php:144
+#: Module.php:161
 msgid ""
 "If checked, hierarchy groupings will show # of resources within currently "
 "assigned itemSet."
 msgstr ""
 
-#: Module.php:157
+#: Module.php:184
 msgid "Combine hierarchy resources"
 msgstr ""
 
-#: Module.php:158
+#: Module.php:185
 msgid ""
 "If checked, groupings will display resources of all child groupings in "
-"resource counts and on hierarchy grouping browse pages."
+"resource counts and on hierarchy grouping browse pages. This option is "
+"disabled when \"Link directly to item set\" is checked, to avoid displaying "
+"an inaccurate count of Item Set resources."
 msgstr ""
 
-#: src/Controller/IndexController.php:65
+#: Module.php:199
+msgid "Show item sets beneath hierarchy"
+msgstr ""
+
+#: Module.php:200
+msgid ""
+"If checked, all item sets assigned to hierarchy will display beneath "
+"hierarchy tree."
+msgstr ""
+
+#: Module.php:213
+msgid "Show item set metadata on grouping page"
+msgstr ""
+
+#: Module.php:214
+msgid ""
+"If checked, associated item set metadata will display on hierarchy grouping "
+"page."
+msgstr ""
+
+#: src/Controller/IndexController.php:44
 msgid "Hierarchy successfully updated"
 msgstr ""
 
