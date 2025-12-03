@@ -59,7 +59,7 @@ class HierarchyUpdater
         $iterate = function ($groupings) use (&$iterate, $hierarchyID, &$parentGrouping, &$childCount) {
             foreach ($groupings as $grouping) {    
                 $groupingID = isset($grouping['data']['groupingID']) ? $grouping['data']['groupingID'] : null;
-                $groupingDelete = $grouping['data']['delete'];
+                $groupingDelete = isset($grouping['data']['delete']) ? $grouping['data']['delete'] : null;
                 // Ignore private item sets if returned
                 $groupingData['item_set'] = (empty($grouping['data']['itemSet']) || $grouping['data']['itemSet'] == 'privateHGset') ? null : $grouping['data']['itemSet'];
                 $groupingData['hierarchy'] = $hierarchyID;
