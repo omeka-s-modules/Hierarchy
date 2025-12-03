@@ -73,18 +73,28 @@ if (!$siteGroupings) {
                     }
                 }
                 $hierarchyItemSets = array_unique($hierarchyItemSets, SORT_REGULAR);
+                $siteItemSets = $this->currentSite()->siteItemSets();
+                foreach ($siteItemSets as $siteItemSet) {
+                    $siteItemSetArray[] = $siteItemSet->itemSet()->id();
+                }
+                foreach ($hierarchyItemSets as $hierarchyItemSet) {
+                    // Ignore item sets not assigned to site
+                    if (!empty($siteItemSetArray) && in_array($hierarchyItemSet->id(), $siteItemSetArray)) {
+                        $displayItemSets[] = $hierarchyItemSet;
+                    }
+                }
                 echo '<span>';
                 if (count($hierarchyItemSets) == 1) {
                     echo 'Contains resources from: ';
-                    foreach ($hierarchyItemSets as $hierarchyItemSet) {
-                        echo $hierarchyItemSet->link($hierarchyItemSet->displayTitle());
+                    foreach ($displayItemSets as $displayItemSet) {
+                        echo $displayItemSet->link($displayItemSet->displayTitle());
                     }
                 } else if (count($hierarchyItemSets) > 1) {
-                    $finalItemSet = end($hierarchyItemSets);
+                    $finalItemSet = end($displayItemSets);
                     echo 'Contains resources from: ';
-                    foreach ($hierarchyItemSets as $hierarchyItemSet) {
-                        echo $hierarchyItemSet->link($hierarchyItemSet->displayTitle());
-                        if ($hierarchyItemSet != $finalItemSet) {
+                    foreach ($displayItemSets as $displayItemSet) {
+                        echo $displayItemSet->link($displayItemSet->displayTitle());
+                        if ($displayItemSet != $finalItemSet) {
                             echo ', ';
                         }
                     }
