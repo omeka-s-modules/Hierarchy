@@ -21,6 +21,12 @@ class IndexController extends AbstractActionController
         }
         $siteHierarchies = $siteSettings->get('site_hierarchies') ?: [];
         
+        // Filter out deleted hierarchies from $siteHierarchies
+        $allHierarchyIds = array_keys($allHierarchies);
+        $siteHierarchies = array_filter($siteHierarchies, function ($row) use ($allHierarchyIds) {
+            return in_array($row['id'], $allHierarchyIds);
+        });
+
         if ($this->getRequest()->isPost()) {
             $params = $this->params()->fromPost();
             if (isset($params['site_hierarchies'])) {
@@ -31,8 +37,8 @@ class IndexController extends AbstractActionController
             } else {
                 $siteHierarchies = [];
             }
-            $siteSettings->set('site_hierarchies', $siteHierarchies);
         }
+        $siteSettings->set('site_hierarchies', $siteHierarchies);
 
         $view = new ViewModel;
         $view->setVariable('site', $site);
