@@ -101,13 +101,16 @@ msgstr "(privato)"
 
 #: Module.php:132
 msgid "Link directly to item set"
-msgstr ""
+msgstr "Link diretto alla collezione"
 
 #: Module.php:133
 msgid ""
 "If checked, public hierarchy links will point directly to associated item "
 "set page instead of hierarchy grouping page."
 msgstr ""
+"Se selezionato, i link nella gerarchia pubblica punteranno direttamente alla"
+" pagina della collezione associata, invece che alla pagina di raccolta della"
+" gerarchia."
 
 #: Module.php:146
 msgid "Show hierarchy label"
@@ -143,26 +146,35 @@ msgid ""
 "disabled when \"Link directly to item set\" is checked, to avoid displaying "
 "an inaccurate count of Item Set resources."
 msgstr ""
+"Se selezionato, le raccolta mostreranno le risorse di tutti le raccolte "
+"\"figlio\" nel conteggio del numero di risorse e nelle pagine di raccolta "
+"della gerarchia. Questa opzione è disabilitata quando \"Link diretto alla "
+"collezione\" è selezionato, in modo da evitare di mostrare un numero errato "
+"di risorse della collezione."
 
 #: Module.php:199
 msgid "Show item sets beneath hierarchy"
-msgstr ""
+msgstr "Mostra collezioni sotto la gerarchia"
 
 #: Module.php:200
 msgid ""
 "If checked, all item sets assigned to hierarchy will display beneath "
 "hierarchy tree."
 msgstr ""
+"Se selezionato, tutte le collezioni assegnate ad una gerarchia saranno "
+"mostrate sotto l'albero della gerarchia."
 
 #: Module.php:213
 msgid "Show item set metadata on grouping page"
-msgstr ""
+msgstr "Mostra i metadata della collezione nella pagina di raccolta"
 
 #: Module.php:214
 msgid ""
 "If checked, associated item set metadata will display on hierarchy grouping "
 "page."
 msgstr ""
+"Se selezionato, i metadata di collezione associati verranno mostrati sulla "
+"pagina di raccolta della gerarchia."
 
 #: src/Controller/IndexController.php:44
 msgid "Hierarchy successfully updated"
