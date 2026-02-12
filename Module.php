@@ -170,26 +170,30 @@ class Module extends AbstractModule
         // to not misrepresent # of resources contained within linked itemSet
         if ($siteSettings->get('hierarchy_link_itemSet') == true) {
             $disableCombined = true;
-            $combined = 'false';
         } else {
             $disableCombined = false;
-            $combined = $siteSettings->get('hierarchy_group_resources');
         }
 
         $form->add([
             'type' => 'checkbox',
             'name' => 'hierarchy_group_resources',
             'options' => [
-                        'element_group' => 'hierarchy',
-                        'label' => 'Combine hierarchy resources', // @translate
-                        'info' => 'If checked, groupings will display resources of all child groupings in resource counts and on hierarchy grouping browse pages. This option is disabled when "Link directly to item set" is checked, to avoid displaying an inaccurate count of Item Set resources.', // @translate
-                    ],
+                'element_group' => 'hierarchy',
+                'label' => 'Combine hierarchy resources',
+                'info' => 'If checked, groupings will display resources of all child groupings in resource counts and on hierarchy grouping browse pages. This option is disabled when "Link directly to item set" is checked, to avoid displaying an inaccurate count of Item Set resources.',
+                'use_hidden_element' => true,
+                'checked_value' => '1',
+                'unchecked_value' => '0',
+            ],
             'attributes' => [
                 'id' => 'group-resources',
                 'disabled' => $disableCombined,
-                'value' => $combined,
             ],
         ]);
+
+        // Force hierarchy_group_resources value to save as string
+        $value = (string) $siteSettings->get('hierarchy_group_resources');
+        $form->get('hierarchy_group_resources')->setValue($value);
 
         $form->add([
             'type' => 'checkbox',
@@ -243,6 +247,16 @@ class Module extends AbstractModule
             'required' => false,
             'allow_empty' => true,
         ]);
+        // Force unset hierarchy_group_resources if hierarchy_link_itemSet is set
+        $inputFilter->get('hierarchy_group_resources')
+        ->getFilterChain()
+        ->attach(function ($value) use ($inputFilter) {
+            $data = $inputFilter->getRawValues();
+            if (!empty($data['hierarchy_link_itemSet'])) {
+                return '0';
+            }
+            return $value;
+        });
         $inputFilter->add([
             'name' => 'hierarchy_display_itemSets',
             'required' => false,
