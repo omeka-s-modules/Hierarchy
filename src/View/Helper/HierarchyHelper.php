@@ -327,11 +327,11 @@ class HierarchyHelper extends AbstractHelper
                     // Show itemSet count if hierarchy_show_count checked in config
                     $itemSetShow = $view->siteSetting('hierarchy_show_count') ? $itemSetCount : '';
 
-                    if ($itemSetCount != null && (strpos($groupingLabel, '(Private)') === false)) {
+                    if (strpos($groupingLabel, '(Private)') === false) {
                         if ($public && !$view->siteSetting('hierarchy_link_itemSet')) {
                             echo '<li>' . $view->hyperlink($groupingLabel, $view->url('site/hierarchy', ['site-slug' => $view->currentSite()->slug(), 'grouping-id' => $grouping->id()])) . $itemSetShow;
                         } else {
-                            // Don't link to hierarchies without items to display (private etc.)
+                            // Don't link to private groupings or non-existent item sets
                             echo '<li>' . $groupingLabel . $itemSetShow;
                         }
                     } else if (!empty($groupingLabel)) {
@@ -361,7 +361,7 @@ class HierarchyHelper extends AbstractHelper
                         $itemSetShow = '';
                     }
 
-                    if ($itemSetCount != null && (strpos($groupingLabel, '(Private)') === false)) {
+                    if (strpos($groupingLabel, '(Private)') === false) {
                         if (in_array($grouping->getItemSet()->id(), $itemSetIDArray)) {
                             // Bold groupings with current itemSet assigned
                             if ($public) {
