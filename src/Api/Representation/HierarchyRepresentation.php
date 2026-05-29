@@ -2,51 +2,29 @@
 namespace Hierarchy\Api\Representation;
 
 use Omeka\Api\Representation\AbstractEntityRepresentation;
-use Hierarchy\Entity\Hierarchy;
 
 class HierarchyRepresentation extends AbstractEntityRepresentation
 {
-    /**
-     * @var Hierarchy
-     */
-    protected $hierarchy;
-
-    /**
-     * Construct the hierarchy object.
-     *
-     * @param Hierarchy $hierarchy
-     */
-    public function __construct(Hierarchy $hierarchy)
+    public function getJsonLdType()
     {
-        $this->hierarchy = $hierarchy;
+        return 'o-module-hierarchy:Hierarchy';
     }
 
     public function getJsonLd()
     {
         return [
-            'id' => $this->id(),
-            'label' => $this->getLabel(),
-            'position' => $this->getPosition(),
+            'o-module-hierarchy:label' => $this->getLabel(),
+            'o-module-hierarchy:position' => $this->getPosition(),
         ];
-    }
-
-    public function getJsonLdType()
-    {
-        return 'o:Hierarchy';
-    }
-
-    public function id()
-    {
-        return $this->hierarchy->getId();
     }
 
     public function getLabel()
     {
-        return $this->hierarchy->getLabel();
+        return $this->resource->getLabel();
     }
 
     public function getPosition()
     {
-        return $this->hierarchy->getPosition();
+        return $this->resource->getPosition();
     }
 }

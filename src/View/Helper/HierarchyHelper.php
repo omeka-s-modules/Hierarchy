@@ -35,15 +35,6 @@ class HierarchyHelper extends AbstractHelper
     }
 
     public function formElement($form, $hierarchy = null) {
-        $defaults = [
-            'id' => '',
-            'label' => '',
-            'data' => '',
-            'position' => '',
-            'delete' => 0,
-        ];
-        $data = $hierarchy ? $hierarchy->getJsonLd() + $defaults : $defaults;
-        
         $form->add([
             'name' => 'hierarchy[__hierarchyIndex__][label]',
             'type' => Element\Text::class,
@@ -73,11 +64,11 @@ class HierarchyHelper extends AbstractHelper
         ]);
 
         $form->setData([
-            'hierarchy[__hierarchyIndex__][label]' => $data['label'],
-            'hierarchy[__hierarchyIndex__][id]' => $data['id'],
-            'hierarchy[__hierarchyIndex__][data]' => $data['data'],
-            'hierarchy[__hierarchyIndex__][position]' => $data['position'],
-            'hierarchy[__hierarchyIndex__][delete]' => $data['delete'],
+            'hierarchy[__hierarchyIndex__][label]' => $hierarchy ? $hierarchy->getLabel() : '',
+            'hierarchy[__hierarchyIndex__][id]' => $hierarchy ? $hierarchy->id() : '',
+            'hierarchy[__hierarchyIndex__][data]' => '',
+            'hierarchy[__hierarchyIndex__][position]' => $hierarchy ? $hierarchy->getPosition() : '',
+            'hierarchy[__hierarchyIndex__][delete]' => 0,
         ]);
 
         $view = $this->getView();

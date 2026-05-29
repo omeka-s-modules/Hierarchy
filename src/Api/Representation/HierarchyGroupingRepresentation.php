@@ -5,20 +5,20 @@ use Omeka\Api\Representation\AbstractEntityRepresentation;
 
 class HierarchyGroupingRepresentation extends AbstractEntityRepresentation
 {
+    public function getJsonLdType()
+    {
+        return 'o-module-hierarchy:HierarchyGrouping';
+    }
+
     public function getJsonLd()
     {
         return [
-            'parentGroupingID' => $this->resource->getParentGroupingID(),
-            'label' => $this->resource->getLabel(),
-            'itemSet' => $this->resource->getItemSet(),
-            'hierarchy' => $this->resource->getHierarchy(),
-            'position' => $this->getPosition(),
+            'o-module-hierarchy:parent_grouping' => $this->getParentGrouping(),
+            'o-module-hierarchy:label' => $this->getLabel(),
+            'o:item_set' => $this->getItemSet(),
+            'o-module-hierarchy:hierarchy' => $this->getAdapter('hierarchy')->getRepresentation($this->resource->getHierarchy()),
+            'o-module-hierarchy:position' => $this->getPosition(),
         ];
-    }
-
-    public function getJsonLdType()
-    {
-        return 'o:HierarchyGrouping';
     }
 
     public function getParentGrouping()
@@ -36,6 +36,8 @@ class HierarchyGroupingRepresentation extends AbstractEntityRepresentation
         return $this->getAdapter('item_sets')->getRepresentation($this->resource->getItemSet());
     }
 
+    // Returns the raw Hierarchy entity — used internally by view helpers for
+    // identity comparison and direct API queries.
     public function getHierarchy()
     {
         return $this->resource->getHierarchy();
