@@ -10,7 +10,18 @@ use Omeka\Stdlib\ErrorStore;
 class HierarchyGroupingAdapter extends AbstractEntityAdapter
 {
     protected $sortFields = [
+        'id' => 'id',
+        'label' => 'label',
         'position' => 'position',
+    ];
+
+    protected $scalarFields = [
+        'id' => 'id',
+        'label' => 'label',
+        'position' => 'position',
+        'hierarchy' => 'hierarchy',
+        'parent_grouping' => 'parent_grouping',
+        'item_set' => 'item_set',
     ];
 
     public function getEntityClass()

@@ -1,6 +1,7 @@
 <?php
 namespace Hierarchy\Api\Adapter;
 
+use Doctrine\ORM\QueryBuilder;
 use Omeka\Api\Adapter\AbstractEntityAdapter;
 use Omeka\Api\Request;
 use Omeka\Entity\EntityInterface;
@@ -9,6 +10,14 @@ use Omeka\Stdlib\ErrorStore;
 class HierarchyAdapter extends AbstractEntityAdapter
 {
     protected $sortFields = [
+        'id' => 'id',
+        'label' => 'label',
+        'position' => 'position',
+    ];
+
+    protected $scalarFields = [
+        'id' => 'id',
+        'label' => 'label',
         'position' => 'position',
     ];
 
@@ -25,6 +34,16 @@ class HierarchyAdapter extends AbstractEntityAdapter
     public function getRepresentationClass()
     {
         return 'Hierarchy\Api\Representation\HierarchyRepresentation';
+    }
+
+    public function buildQuery(QueryBuilder $qb, array $query)
+    {
+        if (isset($query['label'])) {
+            $qb->andWhere($qb->expr()->eq(
+                'omeka_root.label',
+                $this->createNamedParameter($qb, $query['label']))
+            );
+        }
     }
 
     public function hydrate(Request $request, EntityInterface $entity,
