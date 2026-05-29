@@ -73,6 +73,13 @@ class HierarchyGroupingAdapter extends AbstractEntityAdapter
         }
     }
 
+    public function validateEntity(EntityInterface $entity, ErrorStore $errorStore)
+    {
+        if (!$entity->getHierarchy()) {
+            $errorStore->addError('o-module-hierarchy:hierarchy', 'A grouping must belong to a hierarchy.'); // @translate
+        }
+    }
+
     public function hydrate(Request $request, EntityInterface $entity,
         ErrorStore $errorStore
     ) {
