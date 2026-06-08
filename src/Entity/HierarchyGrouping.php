@@ -3,7 +3,6 @@ namespace Hierarchy\Entity;
 
 use Omeka\Entity\AbstractEntity;
 use Omeka\Entity\ItemSet;
-use Hierarchy\Entity\HierarchyBlock;
 
 /**
  * @Entity
@@ -16,7 +15,7 @@ class HierarchyGrouping extends AbstractEntity
      * @GeneratedValue
      */
     protected $id;
-    
+
     /**
      * @Column(type="integer", nullable=true)
      */
@@ -73,8 +72,8 @@ class HierarchyGrouping extends AbstractEntity
     {
         return $this->label;
     }
-    
-    public function setItemSet(ItemSet $itemSet = null)
+
+    public function setItemSet(?ItemSet $itemSet = null)
     {
         $this->item_set = $itemSet;
     }

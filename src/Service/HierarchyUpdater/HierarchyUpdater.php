@@ -52,20 +52,20 @@ class HierarchyUpdater
         }
         return $hierarchyID;
     }
-    
+
     public function updateTreeData($hierarchyData)
     {
         $hierarchyID = $hierarchyData['id'];
         $iterate = function ($groupings) use (&$iterate, $hierarchyID, &$parentGrouping, &$childCount) {
-            foreach ($groupings as $grouping) {    
-                $groupingID = isset($grouping['data']['groupingID']) ? $grouping['data']['groupingID'] : null;
-                $groupingDelete = isset($grouping['data']['delete']) ? $grouping['data']['delete'] : null;
+            foreach ($groupings as $grouping) {
+                $groupingID = $grouping['data']['groupingID'] ?? null;
+                $groupingDelete = $grouping['data']['delete'] ?? null;
                 // Ignore private item sets if returned
                 $groupingData['item_set'] = (empty($grouping['data']['itemSet']) || $grouping['data']['itemSet'] == 'privateHGset') ? null : $grouping['data']['itemSet'];
                 $groupingData['hierarchy'] = $hierarchyID;
                 $groupingData['parent_grouping'] = $parentGrouping ?: '';
-                $groupingData['label'] = isset($grouping['data']['label']) ? $grouping['data']['label'] : '';
-                $groupingData['position'] = isset($grouping['data']['position']) ? $grouping['data']['position'] : '';
+                $groupingData['label'] = $grouping['data']['label'] ?? '';
+                $groupingData['position'] = $grouping['data']['position'] ?? '';
                 if ($groupingDelete) {
                     // Delete groupings with disabled flag
                     if (isset($groupingID)) {
@@ -74,7 +74,7 @@ class HierarchyUpdater
                         // Ignore if newly created grouping marked for deletion
                         continue;
                     }
-                } else if (isset($groupingID)) {
+                } elseif (isset($groupingID)) {
                     // Update existing grouping metadata
                     $this->response = $this->api->update('hierarchy_grouping', $groupingID, $groupingData);
                 } else {

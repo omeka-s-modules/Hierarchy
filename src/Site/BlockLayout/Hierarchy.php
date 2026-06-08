@@ -5,27 +5,25 @@ use Omeka\Api\Representation\SiteRepresentation;
 use Omeka\Api\Representation\SitePageRepresentation;
 use Omeka\Api\Representation\SitePageBlockRepresentation;
 use Omeka\Site\BlockLayout\AbstractBlockLayout;
-use Laminas\Form\Element;
-use Laminas\Form\Form;
 use Laminas\Form\Element\Select;
 use Laminas\View\Renderer\PhpRenderer;
 
 class Hierarchy extends AbstractBlockLayout
 {
-
-    public function getLabel() {
+    public function getLabel()
+    {
         return 'Hierarchy'; // @translate
     }
 
     public function form(PhpRenderer $view, SiteRepresentation $site,
-        SitePageRepresentation $page = null, SitePageBlockRepresentation $block = null
+        ?SitePageRepresentation $page = null, ?SitePageBlockRepresentation $block = null
     ) {
         $allHierarchies = $view->api()->search('hierarchy', ['sort_by' => 'position'])->getContent();
 
         // Only show groupings/hierarchies assigned by Hierarchy option in site's context menu
         $siteHierarchiesArray = $view->siteSetting('site_hierarchies');
 
-        $hierarchies = array();
+        $hierarchies = [];
         foreach ($allHierarchies as $hierarchy) {
             if ($siteHierarchiesArray) {
                 foreach ($siteHierarchiesArray as $siteHierarchy) {
@@ -58,7 +56,7 @@ class Hierarchy extends AbstractBlockLayout
     }
 
     public function render(PhpRenderer $view, SitePageBlockRepresentation $block)
-    {	
+    {
         $hierarchy = $view->api()->searchOne('hierarchy', ['id' => $block->dataValue('Hierarchy')])->getContent();
         if (!$hierarchy) {
             return '';

@@ -149,16 +149,16 @@ return [
         ],
     ],
     'resource_page_block_layouts' => [
-         'invokables' => [
-             'hierarchy' => Site\ResourcePageBlockLayout\Hierarchy::class,
-         ],
-     ],
-     'resource_page_blocks_default' => [
-         'items' => [
-             'main' => ['hierarchy'],
-         ],
-         'item_sets' => [
-             'main' => ['hierarchy'],
+        'invokables' => [
+            'hierarchy' => Site\ResourcePageBlockLayout\Hierarchy::class,
         ],
-     ],
+    ],
+    'resource_page_blocks_default' => [
+        'items' => [
+            'main' => ['hierarchy'],
+        ],
+        'item_sets' => [
+            'main' => ['hierarchy'],
+        ],
+    ],
 ];

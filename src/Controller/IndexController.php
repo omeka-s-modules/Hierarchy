@@ -1,15 +1,10 @@
 <?php
 namespace Hierarchy\Controller;
 
-use Hierarchy\Form\ConfigForm;
 use Hierarchy\Service\HierarchyUpdater\HierarchyUpdater;
 use Laminas\Mvc\Controller\AbstractActionController;
-use Laminas\ServiceManager\ServiceLocatorInterface;
 use Laminas\View\Model\ViewModel;
 use Laminas\Form\Form;
-use Omeka\Api\Exception as ApiException;
-use Omeka\Settings\Settings;
-use Omeka\Stdlib\Message;
 
 class IndexController extends AbstractActionController
 {
@@ -63,8 +58,9 @@ class IndexController extends AbstractActionController
         $itemSetArray = [];
         $itemSets = $this->api()->search('item_sets')->getContent();
         foreach ($itemSets as $itemSet) {
-            if ($itemSet->title() != '')
-            $itemSetArray[$itemSet->id()] = $itemSet->title();
+            if ($itemSet->title() != '') {
+                $itemSetArray[$itemSet->id()] = $itemSet->title();
+            }
         }
 
         $view->setVariable('itemSetArray', $itemSetArray);

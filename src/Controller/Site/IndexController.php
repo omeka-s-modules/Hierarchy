@@ -15,7 +15,7 @@ class IndexController extends AbstractActionController
         // Retrieve grouping given in URL
         $grouping = $this->params('grouping-id') ? $this->api()->read('hierarchy_grouping', $this->params('grouping-id'))->getContent() : '';
         $groupingItemSet = $grouping->getItemSet();
-        
+
         // Retrieve items assigned to groupings, including 'child' groupings if hierarchy_group_resources checked in config
         $allGroupings = $this->api()->search('hierarchy_grouping', ['hierarchy' => $grouping->getHierarchy(), 'sort_by' => 'position'])->getContent();
         $itemSetArray = $this->viewHelpers()->get('hierarchyHelper')->getChildItemsets($grouping, $allGroupings);
@@ -36,7 +36,7 @@ class IndexController extends AbstractActionController
         }
 
         $siteSlug = $this->params('site-slug');
-        
+
         $view->setVariable('hierarchyGrouping', $grouping);
         $view->setVariable('itemSet', $groupingItemSet);
         $view->setVariable('items', $items);

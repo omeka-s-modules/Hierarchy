@@ -14,13 +14,13 @@ class IndexController extends AbstractActionController
         $siteSettings = $this->siteSettings();
         $form = $this->getForm(Form::class);
         $hierarchies = $this->api()->search('hierarchy', ['sort_by' => 'position'])->getContent();
-        
+
         $allHierarchies = [];
         foreach ($hierarchies as $hierarchy) {
             $allHierarchies[$hierarchy->id()] = $hierarchy->getLabel();
         }
         $siteHierarchies = $siteSettings->get('site_hierarchies') ?: [];
-        
+
         // Filter out deleted hierarchies from $siteHierarchies
         $allHierarchyIds = array_keys($allHierarchies);
         $siteHierarchies = array_filter($siteHierarchies, function ($row) use ($allHierarchyIds) {

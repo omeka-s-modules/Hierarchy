@@ -4,13 +4,9 @@ namespace Hierarchy;
 use Omeka\Module\AbstractModule;
 use Omeka\Entity\Item;
 use Laminas\ServiceManager\ServiceLocatorInterface;
-use Laminas\View\Renderer\PhpRenderer;
-use Laminas\Mvc\Controller\AbstractController;
 use Laminas\EventManager\SharedEventManagerInterface;
-use Laminas\Form\Fieldset;
 use Laminas\Mvc\MvcEvent;
 use Laminas\EventManager\Event;
-use Hierarchy\Form\ConfigForm;
 
 class Module extends AbstractModule
 {
@@ -22,16 +18,16 @@ class Module extends AbstractModule
     public function onBootstrap(MvcEvent $event)
     {
         parent::onBootstrap($event);
-    
+
         $acl = $this->getServiceLocator()->get('Omeka\Acl');
-    
+
         // Allow all users to access public hierarchies
         $acl->allow(
             null,
             ['Hierarchy\Entity\Hierarchy',
-            'Hierarchy\Entity\HierarchyGrouping',
-            'Hierarchy\Api\Adapter\HierarchyGroupingAdapter',
-            'Hierarchy\Api\Adapter\HierarchyAdapter',
+                'Hierarchy\Entity\HierarchyGrouping',
+                'Hierarchy\Api\Adapter\HierarchyGroupingAdapter',
+                'Hierarchy\Api\Adapter\HierarchyAdapter',
             ],
         );
         $acl->allow(null, 'Hierarchy\Controller\Site\Index', 'hierarchy');
@@ -57,7 +53,7 @@ class Module extends AbstractModule
             $siteSettings->set('hierarchy_group_resources', '1');
         }
     }
-    
+
     public function uninstall(ServiceLocatorInterface $serviceLocator)
     {
         $connection = $serviceLocator->get('Omeka\Connection');
@@ -65,7 +61,7 @@ class Module extends AbstractModule
         $connection->exec('ALTER TABLE hierarchy_grouping DROP FOREIGN KEY FK_DCDE57FF582A8328');
         $connection->exec('DROP TABLE hierarchy');
         $connection->exec('DROP TABLE hierarchy_grouping');
-        
+
         $api = $serviceLocator->get('Omeka\ApiManager');
         $sites = $api->search('sites', [])->getContent();
         $siteSettings = $serviceLocator->get('Omeka\Settings\Site');
@@ -128,10 +124,10 @@ class Module extends AbstractModule
             'type' => 'checkbox',
             'name' => 'hierarchy_link_itemSet',
             'options' => [
-                        'element_group' => 'hierarchy',
-                        'label' => 'Link directly to item set', // @translate
-                        'info' => 'If checked, public hierarchy links will point directly to associated item set page instead of hierarchy grouping page.', // @translate
-                    ],
+                'element_group' => 'hierarchy',
+                'label' => 'Link directly to item set', // @translate
+                'info' => 'If checked, public hierarchy links will point directly to associated item set page instead of hierarchy grouping page.', // @translate
+            ],
             'attributes' => [
                 'id' => 'link-itemset',
                 'value' => $siteSettings->get('hierarchy_link_itemSet'),
@@ -142,10 +138,10 @@ class Module extends AbstractModule
             'type' => 'checkbox',
             'name' => 'hierarchy_show_label',
             'options' => [
-                        'element_group' => 'hierarchy',
-                        'label' => 'Show hierarchy label', // @translate
-                        'info' => 'If checked, assigned label will display as hierarchy header on public pages.', // @translate
-                    ],
+                'element_group' => 'hierarchy',
+                'label' => 'Show hierarchy label', // @translate
+                'info' => 'If checked, assigned label will display as hierarchy header on public pages.', // @translate
+            ],
             'attributes' => [
                 'id' => 'show-label',
                 'value' => $siteSettings->get('hierarchy_show_label', true),
@@ -156,10 +152,10 @@ class Module extends AbstractModule
             'type' => 'checkbox',
             'name' => 'hierarchy_show_count',
             'options' => [
-                        'element_group' => 'hierarchy',
-                        'label' => 'Show hierarchy resource counts', // @translate
-                        'info' => 'If checked, hierarchy groupings will show # of resources within currently assigned itemSet.', // @translate
-                    ],
+                'element_group' => 'hierarchy',
+                'label' => 'Show hierarchy resource counts', // @translate
+                'info' => 'If checked, hierarchy groupings will show # of resources within currently assigned itemSet.', // @translate
+            ],
             'attributes' => [
                 'id' => 'show-count',
                 'value' => $siteSettings->get('hierarchy_show_count', true),
@@ -199,10 +195,10 @@ class Module extends AbstractModule
             'type' => 'checkbox',
             'name' => 'hierarchy_display_itemSets',
             'options' => [
-                        'element_group' => 'hierarchy',
-                        'label' => 'Show item sets beneath hierarchy', // @translate
-                        'info' => 'If checked, all item sets assigned to hierarchy will display beneath hierarchy tree.', // @translate
-                    ],
+                'element_group' => 'hierarchy',
+                'label' => 'Show item sets beneath hierarchy', // @translate
+                'info' => 'If checked, all item sets assigned to hierarchy will display beneath hierarchy tree.', // @translate
+            ],
             'attributes' => [
                 'id' => 'display-itemsets',
                 'value' => $siteSettings->get('hierarchy_display_itemSets'),
@@ -213,10 +209,10 @@ class Module extends AbstractModule
             'type' => 'checkbox',
             'name' => 'hierarchy_show_itemSet_metadata',
             'options' => [
-                        'element_group' => 'hierarchy',
-                        'label' => 'Show item set metadata on grouping page', // @translate
-                        'info' => 'If checked, associated item set metadata will display on hierarchy grouping page.', // @translate
-                    ],
+                'element_group' => 'hierarchy',
+                'label' => 'Show item set metadata on grouping page', // @translate
+                'info' => 'If checked, associated item set metadata will display on hierarchy grouping page.', // @translate
+            ],
             'attributes' => [
                 'id' => 'show-metadata',
                 'value' => $siteSettings->get('hierarchy_show_itemSet_metadata'),
@@ -280,8 +276,8 @@ class Module extends AbstractModule
         $view = $event->getTarget();
         $view->headLink()->appendStylesheet($view->assetUrl('css/hierarchy.css', 'Hierarchy'));
         $api = $this->getServiceLocator()->get('Omeka\ApiManager');
-        $printedHierarchies = array();
-        $itemGroupings = array();
+        $printedHierarchies = [];
+        $itemGroupings = [];
         if ($view->item->itemSets()) {
             // Get order for printing item's sets from position on hierarchy page
             $itemSetOrder = array_filter($api->search('hierarchy_grouping', ['sort_by' => 'position'], ['returnScalar' => 'item_set'])->getContent());

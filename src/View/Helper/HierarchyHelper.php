@@ -3,7 +3,6 @@ namespace Hierarchy\View\Helper;
 
 use Laminas\Form\View\Helper\AbstractHelper;
 use Omeka\Mvc\Exception;
-use Omeka\Form\Element as OmekaElement;
 use Laminas\Form\Element;
 use Laminas\Form\Form;
 
@@ -11,7 +10,6 @@ class HierarchyHelper extends AbstractHelper
 {
     /**
      * Return the HTML necessary to render all hierarchy form elements.
-     *
      */
     public function hierarchyFormElements($form)
     {
@@ -25,7 +23,8 @@ class HierarchyHelper extends AbstractHelper
         return $html;
     }
 
-    public function hierarchyFormElement($form, $hierarchy = null) {
+    public function hierarchyFormElement($form, $hierarchy = null)
+    {
         $view = $this->getView();
         return $view->partial('hierarchy/common/hierarchy', [
             'label' => $hierarchy ? $hierarchy->getLabel() : null,
@@ -34,7 +33,8 @@ class HierarchyHelper extends AbstractHelper
         ]);
     }
 
-    public function formElement($form, $hierarchy = null) {
+    public function formElement($form, $hierarchy = null)
+    {
         $form->add([
             'name' => 'hierarchy[__hierarchyIndex__][label]',
             'type' => Element\Text::class,
@@ -113,7 +113,7 @@ class HierarchyHelper extends AbstractHelper
                     ],
                 ];
                 // Return any groupings with current grouping ID as parent
-                $childArray = array_filter($allGroupings, function($child) use($grouping) {
+                $childArray = array_filter($allGroupings, function ($child) use ($grouping) {
                     return $child->getParentGrouping() == $grouping->id();
                 });
                 if (count($childArray) > 0) {
@@ -145,9 +145,9 @@ class HierarchyHelper extends AbstractHelper
         $itemCount = 0;
 
         if (!$itemSetArray) {
-            $resourceArray = array();
+            $resourceArray = [];
         } else {
-            $resourceArray = array();
+            $resourceArray = [];
             foreach ($itemSetArray as $itemSet) {
                 $response = $view->api()
                 ->search('items', [
@@ -165,7 +165,7 @@ class HierarchyHelper extends AbstractHelper
         if ($itemCount == 0) {
             // Hide count if 0 items returned
             return null;
-        } else if ($itemCount > 1) {
+        } elseif ($itemCount > 1) {
             return ' (' . $itemCount . ' items)';
         } else {
             return ' (' . $itemCount . ' item)';
@@ -175,8 +175,8 @@ class HierarchyHelper extends AbstractHelper
     public function getChildItemsets($currentGrouping, $allGroupings)
     {
         $view = $this->getView();
-        $itemSetArray = array();
-        $siteItemSetArray = array();
+        $itemSetArray = [];
+        $siteItemSetArray = [];
 
         if ($view->currentSite()) {
             $siteItemSets = $view->currentSite()->siteItemSets();
@@ -201,7 +201,7 @@ class HierarchyHelper extends AbstractHelper
                     }
                 }
                 // Return any groupings with current grouping as parent
-                $childArray = array_filter($allGroupings, function($child) use($currentGrouping) {
+                $childArray = array_filter($allGroupings, function ($child) use ($currentGrouping) {
                     return $child->getParentGrouping() == $currentGrouping->id();
                 });
                 foreach ($childArray as $childGrouping) {
@@ -244,12 +244,12 @@ class HierarchyHelper extends AbstractHelper
 
         if ($view->currentSite()) {
             $siteItemSets = $view->currentSite()->siteItemSets();
-            $siteItemSetArray = array();
+            $siteItemSetArray = [];
             foreach ($siteItemSets as $siteItemSet) {
                 $siteItemSetArray[] = $siteItemSet->itemSet()->id();
             }
         } else {
-            $siteItemSetArray = array();
+            $siteItemSetArray = [];
         }
 
         $iterate = function ($groupings) use ($view, $currentItemSet, $item, $public, $valueLang, &$itemSetCounter, &$iterate, &$allGroupings, &$printedGroupings, &$currentHierarchy, &$childCount, $siteItemSetArray) {
@@ -277,7 +277,7 @@ class HierarchyHelper extends AbstractHelper
 
                 if ($grouping->getParentGrouping() != 0) {
                     // $iterate through any groupings with current grouping as child
-                    $parentArray = array_filter($allGroupings, function($parent) use($grouping) {
+                    $parentArray = array_filter($allGroupings, function ($parent) use ($grouping) {
                         return $parent->id() == $grouping->getParentGrouping();
                     });
                     if (count($parentArray) > 0) {
@@ -325,8 +325,8 @@ class HierarchyHelper extends AbstractHelper
                             // Don't link to private groupings or non-existent item sets
                             echo '<li>' . $groupingLabel . $itemSetShow;
                         }
-                    } else if (!empty($groupingLabel)) {
-                         echo '<li>' . $groupingLabel;
+                    } elseif (!empty($groupingLabel)) {
+                        echo '<li>' . $groupingLabel;
                     }
                 }
 
@@ -334,11 +334,11 @@ class HierarchyHelper extends AbstractHelper
                     // Point directly to associated item set if hierarchy_link_itemSet checking in config
                     if ($view->siteSetting('hierarchy_link_itemSet') && $public) {
                         $groupingLink = $view->hyperlink($groupingLabel, $view->url('site/resource-id', ['site-slug' => $view->currentSite()->slug(), 'controller' => 'item-set', 'id' => $itemSet->id()]));
-                    } else if ($public) {
+                    } elseif ($public) {
                         $groupingLink = $view->hyperlink($groupingLabel, $view->url('site/hierarchy', ['site-slug' => $view->currentSite()->slug(), 'grouping-id' => $grouping->id()]));
                     }
 
-                    $itemSetArray = isset($item) ? $item->itemSets() : array($currentItemSet);
+                    $itemSetArray = isset($item) ? $item->itemSets() : [$currentItemSet];
                     foreach ($itemSetArray as $itemItemSet) {
                         $itemSetIDArray[] = $itemItemSet->id();
                     }
@@ -374,12 +374,12 @@ class HierarchyHelper extends AbstractHelper
                 }
 
                 // Return any groupings with current grouping as parent
-                $childArray = array_filter($allGroupings, function($child) use($grouping) {
+                $childArray = array_filter($allGroupings, function ($child) use ($grouping) {
                     return $child->getParentGrouping() == $grouping->id();
                 });
 
                 // Remove already printed groupings from $allGroupings array
-                $allGroupings = array_filter($allGroupings, function($child) use($grouping) {
+                $allGroupings = array_filter($allGroupings, function ($child) use ($grouping) {
                     return $child->id() != $grouping->id();
                 });
 
